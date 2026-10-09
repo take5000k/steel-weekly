@@ -139,7 +139,7 @@ def main():
             except Exception as e:
                 log.append(f"FAIL ECOS 목록 {stat} {redact(str(e))[:150]}")
 
-    meta = {"updated_at": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z", "indicators": out, "log": log}
+    meta = {"updated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"), "indicators": out, "log": log}
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n".join(log))
     ok = sum(1 for m in out if m["status"] == "ok")
