@@ -157,6 +157,13 @@ table.min640{min-width:640px}
 .tile b{font-family:var(--f-data);font-size:15px}
 .dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px;margin:0}
 .dl dt{color:var(--muted)} .dl dd{margin:0;text-align:right}
+.dlbox{border:1px solid var(--line);border-radius:4px;padding:12px 14px;display:grid;gap:10px}
+.dlbox h3{margin:0;font-size:13.5px;font-weight:600}
+.dlrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dlbox label{display:grid;gap:3px;font-size:12px;color:var(--muted);min-width:0}
+.dlbox input,.dlbox select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-width:0;width:100%}
+.dlbox .btn{width:100%}
+.dlbox .hint{font-size:12px;color:var(--muted);margin:0}
 .sum{margin:0;padding-left:18px;font-size:13.5px;display:grid;gap:3px}
 .row-between{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
 .mini-seg button{padding:5px 10px;font-size:12.5px}
@@ -621,6 +628,16 @@ function renderDetail(){
       <li>최근 1개월간 ${Math.abs(i.cM).toFixed(1)}% ${word(i.cM)}</li>
       <li>1년 전 대비 ${Math.abs(i.cY).toFixed(1)}% ${word(i.cY)}한 수준</li>
       <li>6개월 최고 ${fmt(hiP.v,i.dec)} (${fdt(i,hiP.d).slice(2)}) · 최저 ${fmt(loP.v,i.dec)} (${fdt(i,loP.d).slice(2)})</li></ul></div>
+    <div class="dlbox">
+      <h3>데이터 다운로드 <span class="unit">CSV · 엑셀에서 바로 열림</span></h3>
+      <div class="dlrow">
+        <label for="dlFrom">시작일<input type="date" id="dlFrom" value="${iso(seg[0].d)}" min="${iso(i.s[0].d)}" max="${iso(i.s[L-1].d)}"></label>
+        <label for="dlTo">종료일<input type="date" id="dlTo" value="${iso(i.s[L-1].d)}" min="${iso(i.s[0].d)}" max="${iso(i.s[L-1].d)}"></label>
+      </div>
+      <label for="dlFreq">주기<select id="dlFreq">${(i.freq==="W"?[["raw","주간 (금요일 기준 원자료)"],["m_avg","월평균"],["m_end","월말"],["q_avg","분기평균"],["y_avg","연평균"]]:[["raw","월간 (원자료)"],["q_avg","분기평균"],["y_avg","연평균"]]).map(([v,t])=>`<option value="${v}">${t}</option>`).join("")}</select></label>
+      <button class="btn primary" id="dlBtn" type="button">CSV 다운로드</button>
+      <p class="hint" id="dlHint">수록 기간 ${fdt(i,i.s[0].d)} ~ ${fdt(i,i.s[L-1].d)} · 총 ${L}건</p>
+    </div>
     <dl class="dl"><dt>단위</dt><dd>${i.unit||"지수"}</dd><dt>데이터 출처</dt><dd>${i.src}</dd><dt>업데이트 주기</dt><dd>${i.freq==="W"?"주간":"월간"}</dd><dt>최근 업데이트</dt><dd class="num">${fdt(i,i.s[L-1].d)}</dd></dl>`;
   if(dbMode==="chart"){
     const cd = d=>dirOf(pct(seg[seg.length-1].v,seg[0].v));
@@ -633,7 +650,32 @@ $("#dbCats").addEventListener("click",e=>{ const b=e.target.closest("[data-cat]"
 $("#dbSearch").addEventListener("input",e=>{ dbQ=e.target.value; renderDB(); });
 $("#dbRows").addEventListener("click",e=>{ const r=e.target.closest("tr[data-id]"); if(r){ dbSel=r.dataset.id; renderDB(); }});
 $("#dbRows").addEventListener("keydown",e=>{ const r=e.target.closest("tr[data-id]"); if(r&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); dbSel=r.dataset.id; renderDB(); }});
-$("#dbDetail").addEventListener("click",e=>{ const r=e.target.closest("[data-r]"), m=e.target.closest("[data-m]");
+
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function aggregate(rows, mode){
+  if(mode==="raw") return rows.map(p=>[iso(p.d),p.v]);
+  const key = d => mode.startsWith("m") ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`
+               : mode.startsWith("q") ? `${d.getFullYear()}-Q${Math.floor(d.getMonth()/3)+1}` : `${d.getFullYear()}`;
+  const g=new Map(); rows.forEach(p=>{ const k=key(p.d); if(!g.has(k)) g.set(k,[]); g.get(k).push(p.v); });
+  return [...g].map(([k,vs])=>[k, mode.endsWith("end") ? vs[vs.length-1] : vs.reduce((a,b)=>a+b,0)/vs.length]);
+}
+function downloadCSV(){
+  const i=dbById[dbSel]; if(!i) return;
+  const f=$("#dlFrom").value, t=$("#dlTo").value, mode=$("#dlFreq").value, hint=$("#dlHint");
+  if(f && t && f>t){ hint.textContent="시작일이 종료일보다 늦음 · 날짜를 다시 선택"; return; }
+  const rows=i.s.filter(p=>(!f||iso(p.d)>=f)&&(!t||iso(p.d)<=t));
+  if(!rows.length){ hint.textContent="선택한 기간에 데이터 없음 · 기간을 넓혀 다시 선택"; return; }
+  const out=aggregate(rows,mode), label=$("#dlFreq").selectedOptions[0].textContent;
+  const head=[["지표명",i.name],["단위",i.unit],["출처",i.src],["주기",label],["기간",`${f||"처음"} ~ ${t||"최근"}`],["다운로드",iso(new Date())],[]];
+  const q=x=>{ const v=String(x); return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v; };
+  const body=[["기준일","값"],...out.map(([d,v])=>[d,Math.round(v*1e4)/1e4])];
+  const csv="\ufeff"+head.concat(body).map(r=>r.map(q).join(",")).join("\r\n");
+  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+  const a=document.createElement("a"); a.href=url; a.download=`${i.id}_${mode}_${(f||"start").replace(/-/g,"")}-${(t||"end").replace(/-/g,"")}.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+  hint.textContent=`${out.length}건 다운로드 완료`;
+}
+$("#dbDetail").addEventListener("click",e=>{ if(e.target.id==="dlBtn"){ downloadCSV(); return; } const r=e.target.closest("[data-r]"), m=e.target.closest("[data-m]");
   if(r){ dbRange=r.dataset.r; renderDetail(); } if(m){ dbMode=m.dataset.m; renderDetail(); }});
 
 /* ---------- 4. 아카이브 (샘플 과거호) ---------- */
