@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-09T15:13:32Z",
+ "updated_at": "2026-10-09T15:14:30Z",
  "indicators": [
   {
    "id": "krw_usd",
@@ -168,6 +168,48 @@
    "last": "2026-07-01",
    "latest": 140.3967857,
    "prev": 150.3621429
+  },
+  {
+   "id": "kr_ppi_steel",
+   "cat": "steel",
+   "name": "한국 생산자물가(철강1차제품)",
+   "unit": "지수(2020=100)",
+   "freq": "M",
+   "src_label": "한국은행 ECOS",
+   "status": "ok",
+   "rows": 68,
+   "first": "2021-01-31",
+   "last": "2026-08-31",
+   "latest": 143.13,
+   "prev": 143.16
+  },
+  {
+   "id": "kr_ppi_rebar",
+   "cat": "steel",
+   "name": "한국 생산자물가(철근·봉강)",
+   "unit": "지수(2020=100)",
+   "freq": "M",
+   "src_label": "한국은행 ECOS",
+   "status": "ok",
+   "rows": 68,
+   "first": "2021-01-31",
+   "last": "2026-08-31",
+   "latest": 155.24,
+   "prev": 155.45
+  },
+  {
+   "id": "kr_ppi_hrc",
+   "cat": "steel",
+   "name": "한국 생산자물가(열연강판)",
+   "unit": "지수(2020=100)",
+   "freq": "M",
+   "src_label": "한국은행 ECOS",
+   "status": "ok",
+   "rows": 68,
+   "first": "2021-01-31",
+   "last": "2026-08-31",
+   "latest": 151.34,
+   "prev": 150.74
   }
  ],
  "log": [
@@ -183,6 +225,8 @@
   "OK   us_steel_ppi      68건  최신 2026-08-01 = 378.128",
   "OK   iron_ore_m        67건  최신 2026-07-01 = 101.595652173913",
   "OK   coal_au_m         67건  최신 2026-07-01 = 140.3967857",
-  "INFO ECOS 404Y014 항목 1577개 목록 저장"
+  "OK   kr_ppi_steel      68건  최신 2026-08-31 = 143.13",
+  "OK   kr_ppi_rebar      68건  최신 2026-08-31 = 155.24",
+  "OK   kr_ppi_hrc        68건  최신 2026-08-31 = 151.34"
  ]
 }
