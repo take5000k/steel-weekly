@@ -212,7 +212,7 @@ footer p{margin:4px 0}
     </div>
     <div class="issue"><b>2026. 10. 05 (월)</b>No. 009 · 기준일 10/02</div>
   </div>
-  <div class="sample">프로토타입 화면 — 모든 수치·문구·과거 리포트는 레이아웃 확인용 샘플이며 실제 시장 데이터가 아님</div>
+  <div class="sample">시범 운영 중 — DB센터는 실제 공개 데이터, 주간 리포트·가격 전망·아카이브의 수치와 문구는 아직 레이아웃 확인용 샘플</div>
 </header>
 
 <nav class="menu" aria-label="메뉴">
@@ -272,7 +272,7 @@ footer p{margin:4px 0}
   <div class="view" id="v-db" hidden>
     <div class="page-head">
       <div><h1>DB센터</h1><p>매크로·산업 지표를 한곳에서 조회, 항목을 선택하면 상세 정보 표시</p></div>
-      <div class="meta">최근 업데이트 2026.10.05</div>
+      <div class="meta" id="dbUpdated">샘플 데이터</div>
     </div>
     <div class="chips" id="dbCats"></div>
     <div class="db-tools">
@@ -565,11 +565,27 @@ $("#fcTabs").addEventListener("click",e=>{ const b=e.target.closest("[data-t]");
 
 /* ---------- 3. DB센터 ---------- */
 let dbCat="macro", dbQ="", dbSel="krw", dbRange="1Y", dbMode="chart";
-const RANGES = {W:{"3M":13,"6M":26,"1Y":52,"3Y":157}, M:{"3M":3,"6M":6,"1Y":12,"3Y":37}};
+let DB = IND, dbById = byId, DB_REAL = false, DB_UPDATED = "2026.10.05";
+const RANGES = {W:{"6M":26,"1Y":52,"3Y":156,"전체":1e9}, M:{"1Y":12,"3Y":36,"전체":1e9}};
+const fdt = (i,d) => i.freq==="M" ? `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}` : ymd(d);
+function decOf(v,unit){ const a=Math.abs(v); return unit==="%"?2 : a<20?2 : a<1000?1 : 1; }
+function loadRealDB(j){
+  const list = j.indicators.filter(x=>x.series && x.series.length>2).map(x=>{
+    const s=x.series.map(([d,v])=>({d:new Date(d+"T00:00:00"),v}));
+    const L=s.length, cur=s[L-1].v, back=(w,m)=>s[Math.max(0,L-1-(x.freq==="W"?w:m))].v;
+    const ind={id:x.id,cat:x.cat,name:x.name,unit:x.unit,freq:x.freq,src:x.src_label,s,cur,prev:s[L-2].v,dec:decOf(cur,x.unit)};
+    ind.c1=pct(cur,ind.prev); ind.cM=pct(cur,back(4,1)); ind.cY=pct(cur,back(52,12));
+    return ind; });
+  if(!list.length) return;
+  DB=list; dbById=Object.fromEntries(list.map(i=>[i.id,i])); DB_REAL=true;
+  DB_UPDATED = j.updated_at.slice(0,10).replace(/-/g,".");
+  dbSel = (DB.find(i=>i.cat===dbCat)||DB[0]).id;
+}
 function renderDB(){
-  $("#dbCats").innerHTML = CATS.map(([k,n])=>`<button class="chip ${k===dbCat&&!dbQ?"on":""}" data-cat="${k}">${n} <span style="opacity:.6">${IND.filter(i=>i.cat===k).length}</span></button>`).join("");
+  $("#dbCats").innerHTML = CATS.map(([k,n])=>`<button class="chip ${k===dbCat&&!dbQ?"on":""}" data-cat="${k}">${n} <span style="opacity:.6">${DB.filter(i=>i.cat===k).length}</span></button>`).join("");
   const q=dbQ.trim();
-  const list = q ? IND.filter(i=>i.name.includes(q)) : IND.filter(i=>i.cat===dbCat);
+  const list = q ? DB.filter(i=>i.name.includes(q)) : DB.filter(i=>i.cat===dbCat);
+  $("#dbUpdated").textContent = `${DB_REAL?"실제 공개 데이터":"샘플 데이터"} · 최근 수집 ${DB_UPDATED}`;
   $("#dbCatName").textContent = q ? `검색 결과 “${q}”` : CATS.find(c=>c[0]===dbCat)[1];
   $("#dbCount").textContent = `${list.length}개 지표`;
   if(list.length && !list.some(i=>i.id===dbSel)) dbSel=list[0].id;
@@ -577,13 +593,14 @@ function renderDB(){
   $("#dbRows").innerHTML = list.length ? list.map(i=>{ const n6=i.freq==="W"?26:6, a=i.s.slice(-n6).map(p=>p.v);
     return `<tr data-id="${i.id}" class="${i.id===dbSel?"sel":""}" tabindex="0"><td>${i.name}<span class="unit">${i.unit}</span></td>
       <td class="num"><b>${fmt(i.cur,i.dec)}</b></td>${cell(i.c1)}${cell(i.cM)}${cell(i.cY)}
-      <td>${spark(a,dirOf(i.cM),90,26)}</td><td class="num" style="color:var(--muted)">${ymd(i.s[i.s.length-1].d).slice(2)}</td></tr>`; }).join("")
+      <td>${spark(a,dirOf(i.cM),90,26)}</td><td class="num" style="color:var(--muted)">${fdt(i,i.s[i.s.length-1].d).slice(2)}</td></tr>`; }).join("")
     : `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">“${q}”와 일치하는 지표 없음 · 다른 단어로 검색</td></tr>`;
   renderDetail();
 }
 function renderDetail(){
-  const i=byId[dbSel], el=$("#dbDetail"); if(!i){ el.innerHTML=""; return; }
-  const d1=dirOf(i.c1), L=i.s.length, n=RANGES[i.freq][dbRange], seg=i.s.slice(-n);
+  const i=dbById[dbSel], el=$("#dbDetail"); if(!i){ el.innerHTML=""; return; }
+  if(!(dbRange in RANGES[i.freq])) dbRange="1Y";
+  const d1=dirOf(i.c1), L=i.s.length, n=RANGES[i.freq][dbRange], seg=i.s.slice(-Math.min(n,L));
   const c3=pct(i.cur,i.s[Math.max(0,L-1-(i.freq==="W"?13:3))].v);
   const six=i.s.slice(-(i.freq==="W"?26:6)); let hiP=six[0], loP=six[0]; six.forEach(p=>{ if(p.v>hiP.v) hiP=p; if(p.v<loP.v) loP=p; });
   const word=p=>dirOf(p)==="flat"?"보합":(p>0?"상승":"하락");
@@ -591,28 +608,28 @@ function renderDetail(){
   el.innerHTML = `
     <div class="row-between"><div class="d-name">${i.name}</div><span class="pill flat sm">${CATS.find(c=>c[0]===i.cat)[1]}</span></div>
     <div><div class="d-big"><b class="num">${fmt(i.cur,i.dec)}</b><span class="unit" style="font-size:14px">${i.unit}</span></div>
-      <div class="c-${d1}" style="font-weight:600;margin-top:4px">${arrow(d1)} ${Math.abs(i.c1).toFixed(1)}% <span style="color:var(--muted);font-weight:400">(직전 대비 · 기준일 ${ymd(i.s[L-1].d)})</span></div></div>
+      <div class="c-${d1}" style="font-weight:600;margin-top:4px">${arrow(d1)} ${Math.abs(i.c1).toFixed(1)}% <span style="color:var(--muted);font-weight:400">(직전 대비 · 기준일 ${fdt(i,i.s[L-1].d)})</span></div></div>
     <div class="tiles">${tile("직전 대비",i.c1)}${tile("1개월",i.cM)}${tile("3개월",c3)}${tile("1년",i.cY)}</div>
     <div class="row-between">
       <div class="seg mini-seg" id="dbMode"><button class="${dbMode==="chart"?"on":""}" data-m="chart">차트</button><button class="${dbMode==="data"?"on":""}" data-m="data">데이터</button></div>
       <div class="seg mini-seg" id="dbRange">${Object.keys(RANGES[i.freq]).map(r=>`<button class="${r===dbRange?"on":""}" data-r="${r}">${r}</button>`).join("")}</div>
     </div>
     <div id="dbChartBox">${dbMode==="chart"?`<div class="chart" id="dbChart"></div>`:
-      `<div class="tbl-box scroll-sm"><table><thead><tr><th>기준일</th><th>값</th><th>직전 대비</th></tr></thead><tbody>${seg.slice().reverse().map((p,k,arr)=>{const pv=arr[k+1]; const c=pv?pct(p.v,pv.v):0; return `<tr><td class="num">${ymd(p.d)}</td><td class="num">${fmt(p.v,i.dec)}</td><td class="num c-${dirOf(c)}">${pv?sgn(c):"—"}</td></tr>`}).join("")}</tbody></table></div>`}</div>
+      `<div class="tbl-box scroll-sm"><table><thead><tr><th>기준일</th><th>값</th><th>직전 대비</th></tr></thead><tbody>${seg.slice().reverse().map((p,k,arr)=>{const pv=arr[k+1]; const c=pv?pct(p.v,pv.v):0; return `<tr><td class="num">${fdt(i,p.d)}</td><td class="num">${fmt(p.v,i.dec)}</td><td class="num c-${dirOf(c)}">${pv?sgn(c):"—"}</td></tr>`}).join("")}</tbody></table></div>`}</div>
     <div class="box"><h3>최근 변동 요약 <span class="unit">자동 생성</span></h3><ul class="sum">
       <li>직전 대비 ${Math.abs(i.c1).toFixed(1)}% ${word(i.c1)}</li>
       <li>최근 1개월간 ${Math.abs(i.cM).toFixed(1)}% ${word(i.cM)}</li>
       <li>1년 전 대비 ${Math.abs(i.cY).toFixed(1)}% ${word(i.cY)}한 수준</li>
-      <li>6개월 최고 ${fmt(hiP.v,i.dec)} (${ymd(hiP.d).slice(2)}) · 최저 ${fmt(loP.v,i.dec)} (${ymd(loP.d).slice(2)})</li></ul></div>
-    <dl class="dl"><dt>단위</dt><dd>${i.unit||"지수"}</dd><dt>데이터 출처</dt><dd>${i.src}</dd><dt>업데이트 주기</dt><dd>${i.freq==="W"?"주간":"월간"}</dd><dt>최근 업데이트</dt><dd class="num">${ymd(i.s[L-1].d)}</dd></dl>`;
+      <li>6개월 최고 ${fmt(hiP.v,i.dec)} (${fdt(i,hiP.d).slice(2)}) · 최저 ${fmt(loP.v,i.dec)} (${fdt(i,loP.d).slice(2)})</li></ul></div>
+    <dl class="dl"><dt>단위</dt><dd>${i.unit||"지수"}</dd><dt>데이터 출처</dt><dd>${i.src}</dd><dt>업데이트 주기</dt><dd>${i.freq==="W"?"주간":"월간"}</dd><dt>최근 업데이트</dt><dd class="num">${fdt(i,i.s[L-1].d)}</dd></dl>`;
   if(dbMode==="chart"){
     const cd = d=>dirOf(pct(seg[seg.length-1].v,seg[0].v));
-    drawChart($("#dbChart"),{labels:seg.map(p=>n>30?ym(p.d):md(p.d)),height:220,aria:`${i.name} 추이`,
+    drawChart($("#dbChart"),{labels:seg.map(p=>(seg.length>30||i.freq==="M")?ym(p.d):md(p.d)),height:220,aria:`${i.name} 추이`,
       lines:[{pts:seg.map((p,k)=>[k,p.v]),color:`var(--${cd()})`,area:true}],
-      tip:(k,v)=>`${ymd(seg[k].d)} · ${fmt(v,i.dec)}`});
+      tip:(k,v)=>`${fdt(i,seg[k].d)} · ${fmt(v,i.dec)}`});
   }
 }
-$("#dbCats").addEventListener("click",e=>{ const b=e.target.closest("[data-cat]"); if(!b) return; dbCat=b.dataset.cat; dbQ=""; $("#dbSearch").value=""; dbSel=IND.find(i=>i.cat===dbCat).id; renderDB(); });
+$("#dbCats").addEventListener("click",e=>{ const b=e.target.closest("[data-cat]"); if(!b) return; dbCat=b.dataset.cat; dbQ=""; $("#dbSearch").value=""; const f=DB.find(i=>i.cat===dbCat); if(f) dbSel=f.id; renderDB(); });
 $("#dbSearch").addEventListener("input",e=>{ dbQ=e.target.value; renderDB(); });
 $("#dbRows").addEventListener("click",e=>{ const r=e.target.closest("tr[data-id]"); if(r){ dbSel=r.dataset.id; renderDB(); }});
 $("#dbRows").addEventListener("keydown",e=>{ const r=e.target.closest("tr[data-id]"); if(r&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); dbSel=r.dataset.id; renderDB(); }});
@@ -674,6 +691,9 @@ function route(){
 document.addEventListener("click",e=>{ if(e.target.id==="backLatest"){ viewIssue=9; route(); }});
 addEventListener("hashchange",route);
 route();
+fetch("data/db.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status))
+  .then(j=>{ loadRealDB(j); if(location.hash.slice(1)==="db") renderDB(); })
+  .catch(()=>{});
 </script>
 
 </body>

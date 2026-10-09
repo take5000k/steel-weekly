@@ -103,6 +103,21 @@ def ecos_discover(stat):
     return len(items)
 
 
+def build_db():
+    """사이트용 통합 파일 data/db.json 생성 (메타 + 전체 시계열)."""
+    meta = json.loads((OUT / "meta.json").read_text(encoding="utf-8"))
+    inds = []
+    for m in meta["indicators"]:
+        f = SERIES / f"{m['id']}.csv"
+        if not f.exists():
+            continue
+        with open(f, encoding="utf-8") as fh:
+            rows = [[r["date"], float(r["value"])] for r in csv.DictReader(fh)]
+        inds.append({k: m.get(k) for k in ("id", "cat", "name", "unit", "freq", "src_label", "status")} | {"series": rows})
+    db = {"updated_at": meta["updated_at"], "indicators": inds}
+    (OUT / "db.json").write_text(json.dumps(db, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
 def main():
     meta_path = OUT / "meta.json"
     old = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
@@ -141,6 +156,7 @@ def main():
 
     meta = {"updated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"), "indicators": out, "log": log}
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
+    build_db()
     print("\n".join(log))
     ok = sum(1 for m in out if m["status"] == "ok")
     print(f"\n성공 {ok}/{len(out)}")
@@ -149,4 +165,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if "--db-only" in sys.argv:
+        build_db()
+    else:
+        main()
