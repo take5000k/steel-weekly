@@ -1,0 +1,19 @@
+{
+  "_note": "수집 대상 지표 목록. source=fred|ecos. 일간 지표는 주간(금요일 기준 마지막 값)으로 변환해 저장.",
+  "start": "2021-01-01",
+  "indicators": [
+    {"id": "krw_usd",   "cat": "macro", "name": "원/달러 환율",            "unit": "원",        "freq": "W", "source": "fred", "code": "DEXKOUS",      "src_label": "FRED (美 연준)"},
+    {"id": "cny_usd",   "cat": "macro", "name": "위안/달러 환율",          "unit": "위안",      "freq": "W", "source": "fred", "code": "DEXCHUS",      "src_label": "FRED (美 연준)"},
+    {"id": "usd_broad", "cat": "macro", "name": "달러지수(무역가중)",       "unit": "지수",      "freq": "W", "source": "fred", "code": "DTWEXBGS",     "src_label": "FRED (美 연준)"},
+    {"id": "fed_upper", "cat": "macro", "name": "美 기준금리(상단)",        "unit": "%",         "freq": "W", "source": "fred", "code": "DFEDTARU",     "src_label": "FRED (美 연준)"},
+    {"id": "ust10",     "cat": "macro", "name": "美 10년물 국채 금리",      "unit": "%",         "freq": "W", "source": "fred", "code": "DGS10",        "src_label": "FRED (美 재무부)"},
+    {"id": "wti",       "cat": "macro", "name": "WTI 유가",                "unit": "달러/배럴", "freq": "W", "source": "fred", "code": "DCOILWTICO",   "src_label": "FRED (美 EIA)"},
+    {"id": "us_indpro", "cat": "macro", "name": "美 산업생산지수",          "unit": "지수",      "freq": "M", "source": "fred", "code": "INDPRO",       "src_label": "FRED (美 연준)"},
+    {"id": "krw_usd_bok","cat": "macro", "name": "원/달러 환율(한국은행 매매기준율)", "unit": "원", "freq": "W", "source": "ecos", "stat": "731Y001", "cycle": "D", "item": "0000001", "src_label": "한국은행 ECOS"},
+    {"id": "kr_base",   "cat": "macro", "name": "한국 기준금리",            "unit": "%",         "freq": "M", "source": "ecos", "stat": "722Y001", "cycle": "M", "item": "0101000", "src_label": "한국은행 ECOS"},
+    {"id": "us_steel_ppi","cat": "steel", "name": "美 철강제품 생산자물가",  "unit": "지수",      "freq": "M", "source": "fred", "code": "WPU101",       "src_label": "FRED (美 BLS)"},
+    {"id": "iron_ore_m","cat": "ore",   "name": "철광석 가격(월평균)",       "unit": "달러/톤",   "freq": "M", "source": "fred", "code": "PIORECRUSDM",  "src_label": "FRED (IMF 1차상품가격)"},
+    {"id": "coal_au_m", "cat": "coal",  "name": "호주 석탄 가격(월평균)",    "unit": "달러/톤",   "freq": "M", "source": "fred", "code": "PCOALAUUSDM",  "src_label": "FRED (IMF 1차상품가격)"}
+  ],
+  "ecos_discover": ["404Y014"]
+}

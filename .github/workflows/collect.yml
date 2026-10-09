@@ -1,0 +1,43 @@
+name: 지표 수집
+
+on:
+  schedule:
+    - cron: "0 21 * * 5"   # 매주 토요일 06:00 KST (금요일 21:00 UTC)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/collect.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 공개 API에서 지표 수집
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: python scripts/collect.py
+      - name: 변경된 데이터 저장
+        run: |
+          git config user.name "steel-weekly-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "데이터 갱신 $(date -u +%Y-%m-%d)"
+            git push
+          fi
