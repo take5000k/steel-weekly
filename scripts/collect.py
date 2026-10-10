@@ -83,6 +83,21 @@ def ecos(stat, cycle, item):
     return rows
 
 
+def ecos_calc(ind):
+    """여러 ECOS 항목을 같은 날짜끼리 묶어 산식으로 계산 (모든 항목 값이 있는 날만)."""
+    cols = {k: dict(ecos(ind["stat"], ind["cycle"], code)) for k, code in ind["items"].items()}
+    dates = set.intersection(*(set(v) for v in cols.values()))
+    expr = compile(ind["formula"], "<formula>", "eval")
+    rows = []
+    for d in sorted(dates):
+        env = {k: cols[k][d] for k in cols}
+        try:
+            rows.append((d, float(eval(expr, {"__builtins__": {}}, env))))
+        except (ZeroDivisionError, ValueError):
+            pass
+    return rows
+
+
 def to_weekly(rows):
     """주(금요일 마감) 기준 마지막 관측값."""
     wk = {}
@@ -128,7 +143,12 @@ def main():
     for ind in CFG["indicators"]:
         m = {k: ind[k] for k in ("id", "cat", "name", "unit", "freq", "src_label")}
         try:
-            rows = fred(ind["code"]) if ind["source"] == "fred" else ecos(ind["stat"], ind["cycle"], ind["item"])
+            if ind["source"] == "fred":
+                rows = fred(ind["code"])
+            elif ind["source"] == "ecos_calc":
+                rows = ecos_calc(ind)
+            else:
+                rows = ecos(ind["stat"], ind["cycle"], ind["item"])
             if ind["freq"] == "W":
                 rows = to_weekly(rows)
             if not rows:

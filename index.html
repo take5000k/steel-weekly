@@ -450,7 +450,7 @@ let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>CHAR
 
 /* ---------- 1. 주간 리포트 ---------- */
 const REPORT = [
- { id:"macro", code:"MACRO", name:"매크로", dir:"flat", wk:["krw_usd_bok","cny_usd","usd_broad","fed_upper","ust10","wti"], mo:["kr_base","us_indpro"],
+ { id:"macro", code:"MACRO", name:"매크로", dir:"flat", wk:["krw_usd_bok","cny_usd_bok","dxy_calc","fed_upper","ust10","wti"], mo:["kr_base","us_indpro"],
    thesis:"美 금리 인하 기대 후퇴와 달러 강세 재개, 중국 경기 부양 효과 제한적",
    points:["美 고용지표 호조로 연내 추가 인하 기대 축소, 10년물 금리 4.3%대 재진입","달러인덱스 반등에 원화 약세 전환, 원자재 수입 원가 부담 확대","중국 제조업 PMI 2개월 연속 50 하회, 인프라 중심 부양책 효과 지연"],
    reasons:["美 금리 고공행진으로 위험자산·원자재 선호 약화","중국 부양책이 소비보다 인프라에 집중되어 체감 효과 지연"],
@@ -519,7 +519,7 @@ function tablesHTML(s){
   if(s.wk.length) h+=`<div class="tbl-box"><table class="min640">
       <thead><tr><th>주간 지표 (금요일 기준)</th><th>${isoD(fri)}</th><th>${isoD(prevFri)}</th><th>증감</th><th>증감률</th><th>최근 8주 흐름</th><th>비고</th></tr></thead>
       <tbody>${(MISSING=[], s.wk.map(id=>weeklyRow(id,fri)).join(""))}</tbody></table></div>
-      ${MISSING.length?`<p class="fn">1) ${MISSING.join(", ")}: FRED(美 연준) 원자료가 약 1주 늦게 공표되어 기준일(${isoD(fri)}) 값이 비어 있음. 직전 금요일 값까지 표시하며, 다음 주 수집 때 자동 반영.</p>`:""}`;
+      ${s.id==="macro"?`<p class="fn">· 원/달러·위안/달러·달러인덱스는 한국은행 매매기준율 기준(서울외환시장 직전 영업일 거래 평균). 위안/달러는 원/달러 ÷ 원/위안, 달러인덱스는 ICE DXY 공개 산식(유로·엔·파운드·캐나다달러·크로나·스위스프랑)으로 계산한 값으로, ICE 공식 지수와 소폭 차이 있음.</p>`:""}${MISSING.length?`<p class="fn">1) ${MISSING.join(", ")}: 원자료 공표가 늦어 기준일(${isoD(fri)}) 값이 비어 있음. 직전 금요일 값까지 표시하며, 다음 수집 때 자동 반영.</p>`:""}`;
   else if(s.wkNote) h+=`<div class="box" style="font-size:13.5px;color:var(--muted)">주간 지표 · ${s.wkNote}</div>`;
   if(s.mo.length) h+=`<div class="tbl-box"><table class="min640">
       <thead><tr><th>월간 지표 (최근 발표월)</th><th>최근월</th><th>직전월</th><th>증감</th><th>증감률</th><th>최근 8개월 흐름</th><th>비고</th></tr></thead>

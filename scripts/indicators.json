@@ -85,6 +85,43 @@
       "src_label": "한국은행 ECOS"
     },
     {
+      "id": "cny_usd_bok",
+      "cat": "macro",
+      "name": "위안/달러 환율(한국은행 매매기준율 교차)",
+      "unit": "위안",
+      "freq": "W",
+      "source": "ecos_calc",
+      "stat": "731Y001",
+      "cycle": "D",
+      "items": {
+        "usd": "0000001",
+        "cny": "0000053"
+      },
+      "formula": "usd/cny",
+      "src_label": "한국은행 ECOS 매매기준율로 계산(원/달러 ÷ 원/위안)"
+    },
+    {
+      "id": "dxy_calc",
+      "cat": "macro",
+      "name": "달러인덱스(DXY 산식 계산)",
+      "unit": "지수",
+      "freq": "W",
+      "source": "ecos_calc",
+      "stat": "731Y001",
+      "cycle": "D",
+      "items": {
+        "usd": "0000001",
+        "jpy100": "0000002",
+        "eur": "0000003",
+        "gbp": "0000012",
+        "cad": "0000013",
+        "chf": "0000014",
+        "sek": "0000016"
+      },
+      "formula": "50.14348112*(eur/usd)**-0.576*(usd/(jpy100/100))**0.136*(gbp/usd)**-0.119*(usd/cad)**0.091*(usd/sek)**0.042*(usd/chf)**0.036",
+      "src_label": "한국은행 ECOS 매매기준율로 ICE DXY 공개 산식 계산"
+    },
+    {
       "id": "kr_base",
       "cat": "macro",
       "name": "한국 기준금리",
@@ -163,7 +200,5 @@
       "src_label": "한국은행 ECOS"
     }
   ],
-  "ecos_discover": [
-    "731Y001"
-  ]
+  "ecos_discover": []
 }
