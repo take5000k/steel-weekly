@@ -46,6 +46,9 @@ COUNTRY_KO = {
 }
 
 
+ALIAS = {"turkey": "türkiye", "vietnam": "viet nam", "korea": "south korea", "taiwan": "taiwan, china"}
+
+
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")
 
@@ -118,8 +121,11 @@ def fetch_month(y, m):
                 continue
             v, yoy = nums[0], nums[1]
             key = "total" if name.lower().startswith("total") else name.lower()
+            key = ALIAS.get(key, key)
+            if not re.search(r"[a-z]", key):
+                continue  # 영문 표가 아닌 경우(다른 언어판) 제외
             (out["regions"] if is_region else out["countries"])[key] = {"label": name, "mt": v, "yoy": yoy}
-    if not out["regions"] and not out["countries"]:
+    if not out["regions"]:
         return {"url": url, "error": "표를 찾지 못함", "n_tables": len(p.tables),
                 "headers": [t[:2] for t in p.tables[:4]]}
     return out
@@ -161,19 +167,24 @@ def main():
     series = {}
     for f in sorted(WS.glob("20??-??.json")):
         d = json.loads(f.read_text(encoding="utf-8"))
-        if "error" in d:
+        if "error" in d or not d.get("regions"):
             continue
         y, m = map(int, f.stem.split("-"))
         date = dt.date(y, m, 1).isoformat()
         for kind, table, ko in (("r", d["regions"], REGION_KO), ("c", d["countries"], COUNTRY_KO)):
             for key, row in table.items():
+                key = ALIAS.get(key, key)
                 sid = "ws_total" if key == "total" else f"ws_{kind}_{slug(key)}"
                 name_ko = ko.get(key, row["label"])
                 s = series.setdefault(sid, {"name": name_ko, "kind": kind, "rows": {}})
                 s["rows"][date] = row["mt"]
     meta = []
+    for old in SERIES.glob("ws_*.csv"):
+        old.unlink()
     for sid, s in sorted(series.items()):
         rows = sorted(s["rows"].items())
+        if len(rows) < 6:
+            continue  # 상위 10개국에 잠깐 든 국가 등 시계열이 짧은 항목은 제외
         with open(SERIES / f"{sid}.csv", "w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
             w.writerow(["date", "value"])
