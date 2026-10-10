@@ -107,7 +107,9 @@ def build_db():
     """사이트용 통합 파일 data/db.json 생성 (메타 + 전체 시계열)."""
     meta = json.loads((OUT / "meta.json").read_text(encoding="utf-8"))
     inds = []
-    for m in meta["indicators"]:
+    extra = OUT / "worldsteel" / "meta_ws.json"
+    allm = meta["indicators"] + (json.loads(extra.read_text(encoding="utf-8"))["indicators"] if extra.exists() else [])
+    for m in allm:
         f = SERIES / f"{m['id']}.csv"
         if not f.exists():
             continue
