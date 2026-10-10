@@ -63,16 +63,14 @@ class TableParser(HTMLParser):
 
 def main():
     result = {"source": "Source: World Steel Association (worldsteel)", "releases": [], "errors": []}
-    try:
-        listing = get(f"{BASE}/media/press-releases/")
-    except Exception as e:
-        result["errors"].append(f"목록 페이지 실패: {e}")
-        listing = ""
+    import datetime as dt
+    months = ["january","february","march","april","may","june","july","august","september","october","november","december"]
+    t = dt.date.today().replace(day=1)
     links = []
-    for href in re.findall(r'href="([^"]+)"', listing):
-        if "crude-steel-production" in href and href not in links:
-            links.append(href)
-    result["found_links"] = links[:10]
+    for k in range(1, 5):  # 직전 1~4개월 보도자료 주소를 규칙대로 생성
+        y, m = (t.year, t.month - k) if t.month - k >= 1 else (t.year - 1, t.month - k + 12)
+        links.append(f"/media/press-releases/{y}/{months[m-1]}-{y}-crude-steel-production/")
+    result["found_links"] = links
     for href in links[:3]:
         url = href if href.startswith("http") else BASE + href
         try:
