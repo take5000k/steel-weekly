@@ -30,6 +30,9 @@ jobs:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
         run: python scripts/collect.py
+      - name: worldsteel 보도자료 표 추출
+        continue-on-error: true
+        run: python scripts/worldsteel.py
       - name: 변경된 데이터 저장
         run: |
           git config user.name "steel-weekly-bot"
