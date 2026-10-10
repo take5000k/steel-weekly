@@ -103,16 +103,20 @@ def fetch_month(y, m):
     p.feed(html)
     out = {"url": url, "regions": {}, "countries": {}}
     for t in p.tables:
-        if not t or len(t[0]) < 3 or "(Mt)" not in " ".join(t[0]):
+        hi = next((k for k, r in enumerate(t[:3]) if "(Mt)" in " ".join(r)), None)
+        if hi is None:
             continue
-        is_region = any(r[0].lower().startswith(("total", "africa", "asia")) for r in t[1:])
-        for r in t[1:]:
-            if len(r) < 3:
+        body = t[hi + 1:]
+        is_region = any(r and r[0].lower().startswith(("total", "africa", "asia")) for r in body)
+        for r in body:
+            if not r:
                 continue
             name = re.sub(r"\s*\(e\)\s*", "", r[0]).strip()
-            v, yoy = num(r[1]), num(r[2])
-            if v is None:
+            nums = [num(c) for c in r[1:] if c.strip() not in ("",)]
+            nums = [x for x in nums if x is not None]
+            if not name or len(nums) < 2:
                 continue
+            v, yoy = nums[0], nums[1]
             key = "total" if name.lower().startswith("total") else name.lower()
             (out["regions"] if is_region else out["countries"])[key] = {"label": name, "mt": v, "yoy": yoy}
     if not out["regions"] and not out["countries"]:
