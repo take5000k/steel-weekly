@@ -116,7 +116,8 @@ def fetch_month(y, m):
             key = "total" if name.lower().startswith("total") else name.lower()
             (out["regions"] if is_region else out["countries"])[key] = {"label": name, "mt": v, "yoy": yoy}
     if not out["regions"] and not out["countries"]:
-        return {"url": url, "error": "표를 찾지 못함"}
+        return {"url": url, "error": "표를 찾지 못함", "n_tables": len(p.tables),
+                "headers": [t[:2] for t in p.tables[:4]]}
     return out
 
 
