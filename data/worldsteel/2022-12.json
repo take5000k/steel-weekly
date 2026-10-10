@@ -1,48 +1,102 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2022/december-2022-crude-steel-production/",
- "error": "표를 찾지 못함",
- "n_tables": 3,
- "headers": [
-  [
-   [
-    "Table 1. Crude steel production by region"
-   ],
-   [
-    "",
-    "Dec 2022 (Mt)",
-    "% change Dec 22/21",
-    "Jan-Dec 2022 (Mt)",
-    "% change Jan-Dec 22/21"
-   ]
-  ],
-  [
-   [
-    "Table 2. Top 10 steel-producing countries"
-   ],
-   [
-    "",
-    "Dec 2022 (Mt)",
-    "",
-    "% change Dec 22/21",
-    "Jan-Dec 2022 (Mt)",
-    "% change Jan-Dec 22/21"
-   ]
-  ],
-  [
-   [
-    "Rank",
-    "",
-    "2022",
-    "2021",
-    "%2022/2021"
-   ],
-   [
-    "1",
-    "China",
-    "1 013.0",
-    "1 034.7",
-    "-2.1"
-   ]
-  ]
- ]
+ "regions": {
+  "africa": {
+   "label": "Africa",
+   "mt": 1.1,
+   "yoy": -8.9
+  },
+  "asia and oceania": {
+   "label": "Asia and Oceania",
+   "mt": 104.9,
+   "yoy": -9.2
+  },
+  "eu (27)": {
+   "label": "EU (27)",
+   "mt": 9.2,
+   "yoy": -16.7
+  },
+  "europe, other": {
+   "label": "Europe, Other",
+   "mt": 3.4,
+   "yoy": -19.2
+  },
+  "middle east": {
+   "label": "Middle East",
+   "mt": 3.7,
+   "yoy": 0.4
+  },
+  "north america": {
+   "label": "North America",
+   "mt": 8.8,
+   "yoy": -9.9
+  },
+  "russia & other cis + ukraine": {
+   "label": "Russia & other CIS + Ukraine",
+   "mt": 6.2,
+   "yoy": -28.4
+  },
+  "south america": {
+   "label": "South America",
+   "mt": 3.3,
+   "yoy": -3.8
+  },
+  "total": {
+   "label": "Total 64 countries",
+   "mt": 140.7,
+   "yoy": -10.8
+  }
+ },
+ "countries": {
+  "china": {
+   "label": "China",
+   "mt": 77.9,
+   "yoy": -9.8
+  },
+  "india": {
+   "label": "India",
+   "mt": 10.6,
+   "yoy": 0.8
+  },
+  "japan": {
+   "label": "Japan",
+   "mt": 6.9,
+   "yoy": -13.1
+  },
+  "united states": {
+   "label": "United States",
+   "mt": 6.5,
+   "yoy": -8.3
+  },
+  "russia": {
+   "label": "Russia",
+   "mt": 5.5,
+   "yoy": -11.3
+  },
+  "south korea": {
+   "label": "South Korea",
+   "mt": 5.2,
+   "yoy": -11.6
+  },
+  "germany": {
+   "label": "Germany",
+   "mt": 2.7,
+   "yoy": -14.6
+  },
+  "türkiye": {
+   "label": "Türkiye",
+   "mt": 2.7,
+   "yoy": -20.0
+  },
+  "brazil": {
+   "label": "Brazil",
+   "mt": 2.5,
+   "yoy": -5.2
+  },
+  "iran": {
+   "label": "Iran",
+   "mt": 2.7,
+   "yoy": 3.3
+  }
+ }
 }

@@ -1,32 +1,102 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2022/november-2022-crude-steel-production/",
- "error": "표를 찾지 못함",
- "n_tables": 2,
- "headers": [
-  [
-   [
-    "Table 1. Crude steel production by region"
-   ],
-   [
-    "",
-    "Nov 2022 (Mt)",
-    "% change Nov 22/21",
-    "Jan-Nov 2022 (Mt)",
-    "% change Jan-Nov 22/21"
-   ]
-  ],
-  [
-   [
-    "Table 2. Top 10 steel-producing countries"
-   ],
-   [
-    "",
-    "Nov 2022 (Mt)",
-    "",
-    "% change Nov 22/21",
-    "Jan-Nov 2022 (Mt)",
-    "% change Jan-Nov 22/21"
-   ]
-  ]
- ]
+ "regions": {
+  "africa": {
+   "label": "Africa",
+   "mt": 1.3,
+   "yoy": -11.4
+  },
+  "asia and oceania": {
+   "label": "Asia and Oceania",
+   "mt": 101.4,
+   "yoy": 2.7
+  },
+  "eu (27)": {
+   "label": "EU (27)",
+   "mt": 10.5,
+   "yoy": -17.9
+  },
+  "europe, other": {
+   "label": "Europe, Other",
+   "mt": 3.2,
+   "yoy": -25.1
+  },
+  "middle east": {
+   "label": "Middle East",
+   "mt": 4.0,
+   "yoy": 11.6
+  },
+  "north america": {
+   "label": "North America",
+   "mt": 8.9,
+   "yoy": -6.3
+  },
+  "russia & other cis + ukraine": {
+   "label": "Russia & other CIS + Ukraine",
+   "mt": 6.5,
+   "yoy": -24.6
+  },
+  "south america": {
+   "label": "South America",
+   "mt": 3.4,
+   "yoy": -14.3
+  },
+  "total": {
+   "label": "Total 64 countries",
+   "mt": 139.1,
+   "yoy": -2.6
+  }
+ },
+ "countries": {
+  "china": {
+   "label": "China",
+   "mt": 74.5,
+   "yoy": 7.3
+  },
+  "india": {
+   "label": "India",
+   "mt": 10.4,
+   "yoy": 5.7
+  },
+  "japan": {
+   "label": "Japan",
+   "mt": 7.2,
+   "yoy": -10.7
+  },
+  "united states": {
+   "label": "United States",
+   "mt": 6.4,
+   "yoy": -10.5
+  },
+  "russia": {
+   "label": "Russia",
+   "mt": 5.6,
+   "yoy": -9.6
+  },
+  "south korea": {
+   "label": "South Korea",
+   "mt": 4.8,
+   "yoy": -18.1
+  },
+  "germany": {
+   "label": "Germany",
+   "mt": 2.8,
+   "yoy": -17.9
+  },
+  "türkiye": {
+   "label": "Türkiye",
+   "mt": 2.4,
+   "yoy": -30.7
+  },
+  "brazil": {
+   "label": "Brazil",
+   "mt": 2.6,
+   "yoy": -16.3
+  },
+  "iran": {
+   "label": "Iran",
+   "mt": 2.9,
+   "yoy": 3.9
+  }
+ }
 }
