@@ -1,0 +1,410 @@
+[
+ {
+  "ITEM_CODE": "0000002",
+  "ITEM_NAME": "일본엔/달러",
+  "CYCLE": "D",
+  "START_TIME": "19770401",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000003",
+  "ITEM_NAME": "달러/유로",
+  "CYCLE": "D",
+  "START_TIME": "19940411",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "통화당 달러"
+ },
+ {
+  "ITEM_CODE": "0000004",
+  "ITEM_NAME": "독일마르크/달러",
+  "CYCLE": "D",
+  "START_TIME": "19640504",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000005",
+  "ITEM_NAME": "프랑스프랑/달러",
+  "CYCLE": "D",
+  "START_TIME": "19641214",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000006",
+  "ITEM_NAME": "이태리리라/달러",
+  "CYCLE": "D",
+  "START_TIME": "19641214",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000007",
+  "ITEM_NAME": "벨기에프랑/달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000008",
+  "ITEM_NAME": "오스트리아실링/달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000009",
+  "ITEM_NAME": "네덜란드길더/달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000010",
+  "ITEM_NAME": "스페인페세타/달러",
+  "CYCLE": "D",
+  "START_TIME": "19880104",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000011",
+  "ITEM_NAME": "핀란드마르카/달러",
+  "CYCLE": "D",
+  "START_TIME": "19880104",
+  "END_TIME": "19990121",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000012",
+  "ITEM_NAME": "달러/영국파운드",
+  "CYCLE": "D",
+  "START_TIME": "19640504",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "통화당 달러"
+ },
+ {
+  "ITEM_CODE": "0000013",
+  "ITEM_NAME": "캐나다달러/달러",
+  "CYCLE": "D",
+  "START_TIME": "19641214",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000014",
+  "ITEM_NAME": "스위스프랑/달러",
+  "CYCLE": "D",
+  "START_TIME": "19641214",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000017",
+  "ITEM_NAME": "달러/호주달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "통화당 달러"
+ },
+ {
+  "ITEM_CODE": "0000026",
+  "ITEM_NAME": "달러/뉴질랜드달러",
+  "CYCLE": "D",
+  "START_TIME": "19880104",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "통화당 달러"
+ },
+ {
+  "ITEM_CODE": "0000027",
+  "ITEM_NAME": "중국위안/달러",
+  "CYCLE": "D",
+  "START_TIME": "19940104",
+  "END_TIME": "20160201",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000030",
+  "ITEM_NAME": "홍콩위안/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20160215",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000015",
+  "ITEM_NAME": "홍콩달러/달러",
+  "CYCLE": "D",
+  "START_TIME": "19640504",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000031",
+  "ITEM_NAME": "대만달러/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000032",
+  "ITEM_NAME": "몽골투그릭/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000033",
+  "ITEM_NAME": "카자흐스탄텡게/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000028",
+  "ITEM_NAME": "태국바트/달러",
+  "CYCLE": "D",
+  "START_TIME": "19940104",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000024",
+  "ITEM_NAME": "싱가폴달러/달러",
+  "CYCLE": "D",
+  "START_TIME": "19830824",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000029",
+  "ITEM_NAME": "인도네시아루피아/달러",
+  "CYCLE": "D",
+  "START_TIME": "19940104",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000025",
+  "ITEM_NAME": "말레이지아링기트/달러",
+  "CYCLE": "D",
+  "START_TIME": "19830824",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000034",
+  "ITEM_NAME": "필리핀페소/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000035",
+  "ITEM_NAME": "베트남동/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000036",
+  "ITEM_NAME": "브루나이달러/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000037",
+  "ITEM_NAME": "인도루피/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000038",
+  "ITEM_NAME": "파키스탄루피/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000039",
+  "ITEM_NAME": "방글라데시타카/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000040",
+  "ITEM_NAME": "멕시코 페소/달러 ",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000041",
+  "ITEM_NAME": "브라질헤알/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000042",
+  "ITEM_NAME": "아르헨티나페소/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000016",
+  "ITEM_NAME": "스웨덴크로나/달러",
+  "CYCLE": "D",
+  "START_TIME": "19670718",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000018",
+  "ITEM_NAME": "덴마크크로네/달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000019",
+  "ITEM_NAME": "노르웨이크로네/달러",
+  "CYCLE": "D",
+  "START_TIME": "19700220",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000043",
+  "ITEM_NAME": "러시아루블/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000044",
+  "ITEM_NAME": "헝가리포린트/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000045",
+  "ITEM_NAME": "폴란트즈워티/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000046",
+  "ITEM_NAME": "체코코루나/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000020",
+  "ITEM_NAME": "사우디아라비아리알/달러",
+  "CYCLE": "D",
+  "START_TIME": "19760701",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000047",
+  "ITEM_NAME": "카타르리얄/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000048",
+  "ITEM_NAME": "이스라엘셰켈/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000049",
+  "ITEM_NAME": "요르단디나르/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000021",
+  "ITEM_NAME": "쿠웨이트디나르/달러",
+  "CYCLE": "D",
+  "START_TIME": "19770401",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000022",
+  "ITEM_NAME": "바레인디나르/달러",
+  "CYCLE": "D",
+  "START_TIME": "19770401",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000023",
+  "ITEM_NAME": "아랍연방토후국 더히람/달러",
+  "CYCLE": "D",
+  "START_TIME": "19770401",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000050",
+  "ITEM_NAME": "튀르키예리라/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000051",
+  "ITEM_NAME": "남아프리카공화국랜드/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ },
+ {
+  "ITEM_CODE": "0000052",
+  "ITEM_NAME": "이집트파운드/달러",
+  "CYCLE": "D",
+  "START_TIME": "20150102",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "달러당 통화"
+ }
+]

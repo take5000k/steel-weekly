@@ -1,0 +1,82 @@
+[
+ {
+  "ITEM_CODE": "0000002",
+  "ITEM_NAME": "원/달러(시가)",
+  "CYCLE": "D",
+  "START_TIME": "19900302",
+  "END_TIME": "20261009",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000005",
+  "ITEM_NAME": "원/달러(고가)",
+  "CYCLE": "D",
+  "START_TIME": "19900302",
+  "END_TIME": "20261009",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000004",
+  "ITEM_NAME": "원/달러(저가)",
+  "CYCLE": "D",
+  "START_TIME": "19900302",
+  "END_TIME": "20261009",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000003",
+  "ITEM_NAME": "원/달러(종가 15:30)",
+  "CYCLE": "D",
+  "START_TIME": "19900302",
+  "END_TIME": "20261009",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000013",
+  "ITEM_NAME": "원/달러(종가)",
+  "CYCLE": "D",
+  "START_TIME": "20240701",
+  "END_TIME": "20261009",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000007",
+  "ITEM_NAME": "원/위안(시가)",
+  "CYCLE": "D",
+  "START_TIME": "20141201",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000008",
+  "ITEM_NAME": "원/위안(고가)",
+  "CYCLE": "D",
+  "START_TIME": "20141201",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000009",
+  "ITEM_NAME": "원/위안(저가)",
+  "CYCLE": "D",
+  "START_TIME": "20141201",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000010",
+  "ITEM_NAME": "원/위안(종가)",
+  "CYCLE": "D",
+  "START_TIME": "20141201",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "원"
+ },
+ {
+  "ITEM_CODE": "0000006",
+  "ITEM_NAME": "원/100엔(하나은행고시)",
+  "CYCLE": "D",
+  "START_TIME": "20050302",
+  "END_TIME": "20261008",
+  "UNIT_NAME": "원"
+ }
+]
