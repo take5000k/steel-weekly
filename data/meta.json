@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-10T06:06:34Z",
+ "updated_at": "2026-10-10T06:14:18Z",
  "indicators": [
   {
    "id": "krw_usd",
@@ -106,12 +106,13 @@
    "unit": "원",
    "freq": "W",
    "src_label": "한국은행 ECOS",
-   "status": "ok",
    "rows": 301,
    "first": "2021-01-08",
    "last": "2026-10-09",
    "latest": 1339.2,
-   "prev": 1359.6
+   "prev": 1359.6,
+   "status": "error",
+   "error": "<urlopen error timed out>"
   },
   {
    "id": "kr_base",
@@ -120,12 +121,13 @@
    "unit": "%",
    "freq": "M",
    "src_label": "한국은행 ECOS",
-   "status": "ok",
    "rows": 69,
    "first": "2021-01-31",
    "last": "2026-09-30",
    "latest": 3.0,
-   "prev": 3.0
+   "prev": 3.0,
+   "status": "error",
+   "error": "<urlopen error timed out>"
   },
   {
    "id": "us_steel_ppi",
@@ -176,12 +178,13 @@
    "unit": "지수(2020=100)",
    "freq": "M",
    "src_label": "한국은행 ECOS",
-   "status": "ok",
    "rows": 68,
    "first": "2021-01-31",
    "last": "2026-08-31",
    "latest": 143.13,
-   "prev": 143.16
+   "prev": 143.16,
+   "status": "error",
+   "error": "<urlopen error timed out>"
   },
   {
    "id": "kr_ppi_rebar",
@@ -190,12 +193,13 @@
    "unit": "지수(2020=100)",
    "freq": "M",
    "src_label": "한국은행 ECOS",
-   "status": "ok",
    "rows": 68,
    "first": "2021-01-31",
    "last": "2026-08-31",
    "latest": 155.24,
-   "prev": 155.45
+   "prev": 155.45,
+   "status": "error",
+   "error": "<urlopen error timed out>"
   },
   {
    "id": "kr_ppi_hrc",
@@ -204,12 +208,13 @@
    "unit": "지수(2020=100)",
    "freq": "M",
    "src_label": "한국은행 ECOS",
-   "status": "ok",
    "rows": 68,
    "first": "2021-01-31",
    "last": "2026-08-31",
    "latest": 151.34,
-   "prev": 150.74
+   "prev": 150.74,
+   "status": "error",
+   "error": "<urlopen error timed out>"
   }
  ],
  "log": [
@@ -220,13 +225,13 @@
   "OK   ust10            301건  최신 2026-10-09 = 5.22",
   "OK   wti              301건  최신 2026-10-09 = 96.24",
   "OK   us_indpro         68건  최신 2026-08-01 = 103.0682",
-  "OK   krw_usd_bok      301건  최신 2026-10-09 = 1339.2",
-  "OK   kr_base           69건  최신 2026-09-30 = 3.0",
+  "FAIL krw_usd_bok    <urlopen error timed out>",
+  "FAIL kr_base        <urlopen error timed out>",
   "OK   us_steel_ppi      68건  최신 2026-08-01 = 378.128",
   "OK   iron_ore_m        67건  최신 2026-07-01 = 101.595652173913",
   "OK   coal_au_m         67건  최신 2026-07-01 = 140.3967857",
-  "OK   kr_ppi_steel      68건  최신 2026-08-31 = 143.13",
-  "OK   kr_ppi_rebar      68건  최신 2026-08-31 = 155.24",
-  "OK   kr_ppi_hrc        68건  최신 2026-08-31 = 151.34"
+  "FAIL kr_ppi_steel   <urlopen error timed out>",
+  "FAIL kr_ppi_rebar   <urlopen error timed out>",
+  "FAIL kr_ppi_hrc     <urlopen error timed out>"
  ]
 }
