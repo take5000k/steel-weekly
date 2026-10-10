@@ -1,6 +1,331 @@
 {
  "source": "Source: World Steel Association (worldsteel)",
- "releases": [],
+ "releases": [
+  {
+   "url": "https://worldsteel.org/media/press-releases/2026/september-2026-crude-steel-production/",
+   "title": "",
+   "tables": []
+  },
+  {
+   "url": "https://worldsteel.org/media/press-releases/2026/august-2026-crude-steel-production/",
+   "title": "August 2026 crude steel production",
+   "tables": [
+    [
+     [
+      "",
+      "Aug 2026 (Mt)",
+      "% change Aug 26/25",
+      "Jan-Aug 2026 (Mt)",
+      "% change Jan-Aug 26/25"
+     ],
+     [
+      "Africa",
+      "2.1",
+      "8.8",
+      "16.7",
+      "9.4"
+     ],
+     [
+      "Asia and Oceania",
+      "106.7",
+      "-1.4",
+      "906.4",
+      "-0.9"
+     ],
+     [
+      "EU (27)",
+      "8.9",
+      "-1.0",
+      "84.5",
+      "-0.3"
+     ],
+     [
+      "Europe, Other",
+      "3.8",
+      "1.2",
+      "29.5",
+      "4.8"
+     ],
+     [
+      "Middle East",
+      "3.7",
+      "-4.6",
+      "33.3",
+      "-7.8"
+     ],
+     [
+      "North America",
+      "9.4",
+      "3.9",
+      "75.3",
+      "5.2"
+     ],
+     [
+      "Russia & other CIS + Ukraine",
+      "6.3",
+      "-5.6",
+      "52.0",
+      "-5.7"
+     ],
+     [
+      "South America",
+      "3.4",
+      "-4.9",
+      "27.5",
+      "-0.7"
+     ],
+     [
+      "Total 70 countries",
+      "144.2",
+      "-1.2",
+      "1,225.2",
+      "-0.7"
+     ]
+    ],
+    [
+     [
+      "",
+      "Aug 2026 (Mt)",
+      "% change Aug 26/25",
+      "Jan-Aug 2026 (Mt)",
+      "% change Jan-Aug 26/25"
+     ],
+     [
+      "China",
+      "74.6",
+      "-3.7",
+      "651.9",
+      "-3.1"
+     ],
+     [
+      "India",
+      "14.8",
+      "4.6",
+      "115.9",
+      "6.0"
+     ],
+     [
+      "United States (e)",
+      "7.3",
+      "3.0",
+      "57.5",
+      "5.5"
+     ],
+     [
+      "Japan",
+      "6.7",
+      "0.4",
+      "54.0",
+      "-0.2"
+     ],
+     [
+      "Russia (e)",
+      "5.5",
+      "-0.3",
+      "43.8",
+      "-5.1"
+     ],
+     [
+      "South Korea",
+      "5.4",
+      "2.6",
+      "42.8",
+      "2.8"
+     ],
+     [
+      "Türkiye",
+      "3.4",
+      "-0.4",
+      "26.6",
+      "6.8"
+     ],
+     [
+      "Germany",
+      "2.6",
+      "1.7",
+      "23.9",
+      "6.3"
+     ],
+     [
+      "Brazil",
+      "2.7",
+      "-6.2",
+      "21.8",
+      "-1.8"
+     ],
+     [
+      "Viet Nam",
+      "2.7",
+      "36.4",
+      "20.6",
+      "29.1"
+     ]
+    ]
+   ]
+  },
+  {
+   "url": "https://worldsteel.org/media/press-releases/2026/july-2026-crude-steel-production/",
+   "title": "July 2026 crude steel production",
+   "tables": [
+    [
+     [
+      "",
+      "Jul 2026 (Mt)",
+      "% change Jul 26/25",
+      "Jan-Jul 2026 (Mt)",
+      "% change Jan-Jul 26/25"
+     ],
+     [
+      "Africa",
+      "2.0",
+      "6.1",
+      "14.6",
+      "9.5"
+     ],
+     [
+      "Asia and Oceania",
+      "109.4",
+      "-1.2",
+      "799.6",
+      "-0.9"
+     ],
+     [
+      "EU (27)",
+      "10.5",
+      "3.8",
+      "76.0",
+      "0.4"
+     ],
+     [
+      "Europe, Other",
+      "3.7",
+      "5.8",
+      "25.7",
+      "5.5"
+     ],
+     [
+      "Middle East",
+      "3.8",
+      "-13.4",
+      "29.6",
+      "-8.1"
+     ],
+     [
+      "North America",
+      "9.6",
+      "4.9",
+      "65.9",
+      "5.4"
+     ],
+     [
+      "Russia & other CIS + Ukraine",
+      "6.7",
+      "2.2",
+      "45.5",
+      "-6.0"
+     ],
+     [
+      "South America",
+      "3.6",
+      "2.8",
+      "24.1",
+      "0.0"
+     ],
+     [
+      "Total 70 countries",
+      "149.2",
+      "-0.3",
+      "1,081.2",
+      "-0.6"
+     ]
+    ],
+    [
+     [
+      "",
+      "Jul 2026 (Mt)",
+      "% change Jul 26/25",
+      "Jan-Jul 2026 (Mt)",
+      "% change Jan-Jul 26/25"
+     ],
+     [
+      "China",
+      "76.9",
+      "-3.6",
+      "577.0",
+      "-3.1"
+     ],
+     [
+      "India",
+      "14.4",
+      "1.9",
+      "101.1",
+      "6.1"
+     ],
+     [
+      "United States",
+      "7.4",
+      "4.4",
+      "50.2",
+      "6.0"
+     ],
+     [
+      "Japan",
+      "6.9",
+      "0.4",
+      "47.3",
+      "-0.3"
+     ],
+     [
+      "Russia (e)",
+      "5.7",
+      "3.3",
+      "38.1",
+      "-6.1"
+     ],
+     [
+      "South Korea",
+      "5.7",
+      "6.4",
+      "37.4",
+      "2.7"
+     ],
+     [
+      "Türkiye",
+      "3.4",
+      "7.0",
+      "23.2",
+      "7.9"
+     ],
+     [
+      "Germany (e)",
+      "2.8",
+      "3.0",
+      "21.4",
+      "8.1"
+     ],
+     [
+      "Brazil",
+      "2.8",
+      "0.1",
+      "19.1",
+      "-1.2"
+     ],
+     [
+      "Viet Nam",
+      "2.7",
+      "34.7",
+      "17.9",
+      "28.0"
+     ]
+    ]
+   ]
+  }
+ ],
  "errors": [],
- "found_links": []
+ "found_links": [
+  "/media/press-releases/2026/september-2026-crude-steel-production/",
+  "/media/press-releases/2026/august-2026-crude-steel-production/",
+  "/media/press-releases/2026/july-2026-crude-steel-production/",
+  "/media/press-releases/2026/june-2026-crude-steel-production/"
+ ]
 }
