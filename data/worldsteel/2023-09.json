@@ -1,0 +1,102 @@
+{
+ "url": "https://worldsteel.org/media/press-releases/2023/september-2023-crude-steel-production/",
+ "regions": {
+  "africa": {
+   "label": "Africa",
+   "mt": 1.3,
+   "yoy": -4.1
+  },
+  "asia and oceania": {
+   "label": "Asia and Oceania",
+   "mt": 110.7,
+   "yoy": -2.1
+  },
+  "eu (27)": {
+   "label": "EU (27)",
+   "mt": 10.6,
+   "yoy": -1.1
+  },
+  "europe, other": {
+   "label": "Europe, Other",
+   "mt": 3.5,
+   "yoy": 2.7
+  },
+  "middle east": {
+   "label": "Middle East",
+   "mt": 3.6,
+   "yoy": -8.2
+  },
+  "north america": {
+   "label": "North America",
+   "mt": 9.0,
+   "yoy": -0.3
+  },
+  "russia & other cis + ukraine": {
+   "label": "Russia & other CIS + Ukraine",
+   "mt": 7.3,
+   "yoy": 10.7
+  },
+  "south america": {
+   "label": "South America",
+   "mt": 3.4,
+   "yoy": -3.7
+  },
+  "total": {
+   "label": "Total 63 countries",
+   "mt": 149.3,
+   "yoy": -1.5
+  }
+ },
+ "countries": {
+  "china": {
+   "label": "China",
+   "mt": 82.1,
+   "yoy": null
+  },
+  "india": {
+   "label": "India",
+   "mt": 11.6,
+   "yoy": null
+  },
+  "japan": {
+   "label": "Japan",
+   "mt": 7.0,
+   "yoy": null
+  },
+  "united states": {
+   "label": "United States",
+   "mt": 6.7,
+   "yoy": null
+  },
+  "russia": {
+   "label": "Russia",
+   "mt": 6.2,
+   "yoy": null
+  },
+  "south korea": {
+   "label": "South Korea",
+   "mt": 5.5,
+   "yoy": null
+  },
+  "germany": {
+   "label": "Germany",
+   "mt": 2.9,
+   "yoy": null
+  },
+  "türkiye": {
+   "label": "Türkiye",
+   "mt": 2.9,
+   "yoy": null
+  },
+  "brazil": {
+   "label": "Brazil",
+   "mt": 2.6,
+   "yoy": null
+  },
+  "iran": {
+   "label": "Iran",
+   "mt": 2.4,
+   "yoy": null
+  }
+ }
+}

@@ -1,0 +1,102 @@
+{
+ "url": "https://worldsteel.org/media/press-releases/2025/november-2025-crude-steel-production/",
+ "regions": {
+  "africa": {
+   "label": "Africa",
+   "mt": 2.0,
+   "yoy": 7.4
+  },
+  "asia and oceania": {
+   "label": "Asia and Oceania",
+   "mt": 99.9,
+   "yoy": -7.1
+  },
+  "eu (27)": {
+   "label": "EU (27)",
+   "mt": 10.2,
+   "yoy": -3.5
+  },
+  "europe, other": {
+   "label": "Europe, Other",
+   "mt": 3.7,
+   "yoy": 9.8
+  },
+  "middle east": {
+   "label": "Middle East",
+   "mt": 5.5,
+   "yoy": 8.2
+  },
+  "north america": {
+   "label": "North America",
+   "mt": 9.0,
+   "yoy": 5.4
+  },
+  "russia & other cis + ukraine": {
+   "label": "Russia & other CIS + Ukraine",
+   "mt": 6.3,
+   "yoy": -3.9
+  },
+  "south america": {
+   "label": "South America",
+   "mt": 3.5,
+   "yoy": 2.4
+  },
+  "total": {
+   "label": "Total 70 countries",
+   "mt": 140.1,
+   "yoy": -4.6
+  }
+ },
+ "countries": {
+  "china": {
+   "label": "China",
+   "mt": 69.9,
+   "yoy": null
+  },
+  "india": {
+   "label": "India",
+   "mt": 13.7,
+   "yoy": null
+  },
+  "united states": {
+   "label": "United States",
+   "mt": 6.8,
+   "yoy": null
+  },
+  "japan": {
+   "label": "Japan",
+   "mt": 6.8,
+   "yoy": null
+  },
+  "russia": {
+   "label": "Russia",
+   "mt": 5.2,
+   "yoy": null
+  },
+  "south korea": {
+   "label": "South Korea",
+   "mt": 5.0,
+   "yoy": null
+  },
+  "türkiye": {
+   "label": "Türkiye",
+   "mt": 3.3,
+   "yoy": null
+  },
+  "germany": {
+   "label": "Germany",
+   "mt": 2.8,
+   "yoy": null
+  },
+  "brazil": {
+   "label": "Brazil",
+   "mt": 2.8,
+   "yoy": null
+  },
+  "iran": {
+   "label": "Iran",
+   "mt": 3.4,
+   "yoy": null
+  }
+ }
+}

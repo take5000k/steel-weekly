@@ -1,0 +1,102 @@
+{
+ "url": "https://worldsteel.org/media/press-releases/2026/june-2026-crude-steel-production/",
+ "regions": {
+  "africa": {
+   "label": "Africa",
+   "mt": 2.2,
+   "yoy": 20.0
+  },
+  "asia and oceania": {
+   "label": "Asia and Oceania",
+   "mt": 115.2,
+   "yoy": 1.5
+  },
+  "eu (27)": {
+   "label": "EU (27)",
+   "mt": 10.8,
+   "yoy": 4.6
+  },
+  "europe, other": {
+   "label": "Europe, Other",
+   "mt": 3.7,
+   "yoy": 10.4
+  },
+  "middle east": {
+   "label": "Middle East",
+   "mt": 4.0,
+   "yoy": -13.4
+  },
+  "north america": {
+   "label": "North America",
+   "mt": 9.5,
+   "yoy": 5.0
+  },
+  "russia & other cis + ukraine": {
+   "label": "Russia & other CIS + Ukraine",
+   "mt": 6.8,
+   "yoy": -2.2
+  },
+  "south america": {
+   "label": "South America",
+   "mt": 3.5,
+   "yoy": -0.3
+  },
+  "total": {
+   "label": "Total 70 countries",
+   "mt": 155.7,
+   "yoy": 1.7
+  }
+ },
+ "countries": {
+  "china": {
+   "label": "China",
+   "mt": 83.7,
+   "yoy": 0.4
+  },
+  "india": {
+   "label": "India",
+   "mt": 14.1,
+   "yoy": 4.5
+  },
+  "united states": {
+   "label": "United States",
+   "mt": 7.2,
+   "yoy": 3.5
+  },
+  "japan": {
+   "label": "Japan",
+   "mt": 6.8,
+   "yoy": 1.3
+  },
+  "russia": {
+   "label": "Russia",
+   "mt": 5.6,
+   "yoy": -3.4
+  },
+  "south korea": {
+   "label": "South Korea",
+   "mt": 5.3,
+   "yoy": -0.9
+  },
+  "türkiye": {
+   "label": "Türkiye",
+   "mt": 3.3,
+   "yoy": 14.7
+  },
+  "germany": {
+   "label": "Germany",
+   "mt": 2.9,
+   "yoy": 9.5
+  },
+  "brazil": {
+   "label": "Brazil",
+   "mt": 2.8,
+   "yoy": 0.1
+  },
+  "viet nam": {
+   "label": "Viet Nam",
+   "mt": 2.6,
+   "yoy": 27.5
+  }
+ }
+}
