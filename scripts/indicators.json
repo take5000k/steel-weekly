@@ -163,5 +163,8 @@
       "src_label": "한국은행 ECOS"
     }
   ],
-  "ecos_discover": []
+  "ecos_discover": [
+    "731Y002",
+    "731Y003"
+  ]
 }
