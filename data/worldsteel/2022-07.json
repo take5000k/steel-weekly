@@ -1,4 +1,32 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2022/july-2022-crude-steel-production/",
- "error": "표를 찾지 못함"
+ "error": "표를 찾지 못함",
+ "n_tables": 2,
+ "headers": [
+  [
+   [
+    "Table 1. Crude steel production by region"
+   ],
+   [
+    "",
+    "Jul 2022 (Mt)",
+    "% change Jul 22/21",
+    "Jan-Jul 2022 (Mt)",
+    "% change Jan-Jul 22/21"
+   ]
+  ],
+  [
+   [
+    "Table 2. Top 10 steel-producing countries"
+   ],
+   [
+    "",
+    "Jul 2022 (Mt)",
+    "",
+    "% change Jul 22/21",
+    "Jan-Jul 2022 (Mt)",
+    "% change Jan-Jul 22/21"
+   ]
+  ]
+ ]
 }

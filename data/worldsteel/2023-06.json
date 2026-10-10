@@ -1,4 +1,32 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2023/june-2023-crude-steel-production/",
- "error": "표를 찾지 못함"
+ "error": "표를 찾지 못함",
+ "n_tables": 2,
+ "headers": [
+  [
+   [
+    "Table 1. Crude steel production by region"
+   ],
+   [
+    "",
+    "Jun 2023 (Mt)",
+    "% change Jun 23/22",
+    "Jan-Jun 2023 (Mt)",
+    "% change Jan-Jun 23/22"
+   ]
+  ],
+  [
+   [
+    "Table 2. Top 10 steel-producing countries"
+   ],
+   [
+    "",
+    "Jun 2023 (Mt)",
+    "",
+    "% change Jun 23/22",
+    "Jan-Jun 2023 (Mt)",
+    "% change Jan-Jun 23/22"
+   ]
+  ]
+ ]
 }

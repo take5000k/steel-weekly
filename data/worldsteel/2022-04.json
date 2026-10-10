@@ -1,4 +1,33 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2022/april-2022-crude-steel-production/",
- "error": "표를 찾지 못함"
+ "error": "표를 찾지 못함",
+ "n_tables": 2,
+ "headers": [
+  [
+   [
+    "Table 1. Crude steel production by region"
+   ],
+   [
+    "",
+    "Apr 2022 (Mt)",
+    "% change Apr 22/21",
+    "Jan-Apr 2022 (Mt)",
+    "% change Jan-Apr 22/21"
+   ]
+  ],
+  [
+   [
+    "Table 2. Top 10 steel-producing countries"
+   ],
+   [
+    "",
+    "Apr 2022 (Mt)",
+    "",
+    "% change Apr 22/21",
+    "",
+    "Jan-Apr 2022 (Mt)",
+    "% change Jan-Apr 22/21"
+   ]
+  ]
+ ]
 }

@@ -1,4 +1,56 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2021/december-2021-crude-steel-production/",
- "error": "표를 찾지 못함"
+ "error": "표를 찾지 못함",
+ "n_tables": 3,
+ "headers": [
+  [
+   [
+    "Table 1. Crude steel production by region",
+    "",
+    "",
+    ""
+   ],
+   [
+    "",
+    "Dec 2021 (Mt)",
+    "% change Dec 21/20",
+    "",
+    "Jan-Dec 2021 (Mt)",
+    "% change Jan-Dec 21/20",
+    "",
+    "",
+    ""
+   ]
+  ],
+  [
+   [
+    "Table 2. Top 10 steel-producing countries"
+   ],
+   [
+    "",
+    "Dec 2021 (Mt)",
+    "",
+    "% change Dec 21/20",
+    "",
+    "Jan-Dec 2021 (Mt)",
+    "% change Jan-Dec 21/20"
+   ]
+  ],
+  [
+   [
+    "Rank",
+    "",
+    "2021",
+    "2020",
+    "%2021/2020"
+   ],
+   [
+    "1",
+    "China",
+    "1 032.8",
+    "1 064.7",
+    "-3"
+   ]
+  ]
+ ]
 }

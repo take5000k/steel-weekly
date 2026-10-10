@@ -1,4 +1,48 @@
 {
  "url": "https://worldsteel.org/media/press-releases/2022/december-2022-crude-steel-production/",
- "error": "표를 찾지 못함"
+ "error": "표를 찾지 못함",
+ "n_tables": 3,
+ "headers": [
+  [
+   [
+    "Table 1. Crude steel production by region"
+   ],
+   [
+    "",
+    "Dec 2022 (Mt)",
+    "% change Dec 22/21",
+    "Jan-Dec 2022 (Mt)",
+    "% change Jan-Dec 22/21"
+   ]
+  ],
+  [
+   [
+    "Table 2. Top 10 steel-producing countries"
+   ],
+   [
+    "",
+    "Dec 2022 (Mt)",
+    "",
+    "% change Dec 22/21",
+    "Jan-Dec 2022 (Mt)",
+    "% change Jan-Dec 22/21"
+   ]
+  ],
+  [
+   [
+    "Rank",
+    "",
+    "2022",
+    "2021",
+    "%2022/2021"
+   ],
+   [
+    "1",
+    "China",
+    "1 013.0",
+    "1 034.7",
+    "-2.1"
+   ]
+  ]
+ ]
 }
