@@ -217,9 +217,9 @@ footer p{margin:4px 0}
       <div class="brand" style="font-size:clamp(24px,4.2vw,34px)">주간 철강 및 철강원료 동향<span>.</span></div>
       <div class="tagline">매크로 · 철강 · 철광석 · 석탄 주간 동향과 흐름 전망</div>
     </div>
-    <div class="issue"><b>2026. 10. 05 (월)</b>No. 009 · 기준일 10/02</div>
+    <div class="issue" id="issueBox"><b>2026. 10. 05 (월)</b>기준일 불러오는 중</div>
   </div>
-  <div class="sample">시범 운영 중 — DB센터는 실제 공개 데이터, 주간 리포트·가격 전망·아카이브의 수치와 문구는 아직 레이아웃 확인용 샘플</div>
+  <div class="sample">시범 운영 중 — DB센터와 주간 리포트 지표표는 실제 공개 데이터, 리포트 해설·가격 전망·아카이브는 아직 샘플</div>
 </header>
 
 <nav class="menu" aria-label="메뉴">
@@ -449,60 +449,104 @@ let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>CHAR
 
 /* ---------- 1. 주간 리포트 ---------- */
 const REPORT = [
- { id:"macro", code:"MACRO", name:"매크로", dir:"flat", ind:["krw","dxy","ust10","cn_pmi","wti"],
+ { id:"macro", code:"MACRO", name:"매크로", dir:"flat", wk:["krw_usd_bok","cny_usd","usd_broad","fed_upper","ust10","wti"], mo:["kr_base","us_indpro"],
    thesis:"美 금리 인하 기대 후퇴와 달러 강세 재개, 중국 경기 부양 효과 제한적",
    points:["美 고용지표 호조로 연내 추가 인하 기대 축소, 10년물 금리 4.3%대 재진입","달러인덱스 반등에 원화 약세 전환, 원자재 수입 원가 부담 확대","중국 제조업 PMI 2개월 연속 50 하회, 인프라 중심 부양책 효과 지연"],
    reasons:["美 금리 고공행진으로 위험자산·원자재 선호 약화","중국 부양책이 소비보다 인프라에 집중되어 체감 효과 지연"],
    risks:["美 고용 둔화 시 금리 인하 기대 재부각","중국 대규모 추가 부양 발표 시 원자재 전반 반등"],
    impact:[["철강","down","내수 부진 장기화로 수요 회복 지연"],["철광석","down","달러 강세로 달러 표시 가격 하방 압력"],["석탄","flat","에너지 가격 안정으로 발전용 수요 보합"]]},
- { id:"steel", code:"STEEL", name:"철강", dir:"flat", ind:["hrc","rebar","hrc_fob","cs_out","st_inv"],
+ { id:"steel", code:"STEEL", name:"철강", dir:"flat", wk:[], mo:["kr_ppi_steel","kr_ppi_rebar","kr_ppi_hrc","us_steel_ppi"], wkNote:"SHFE 철근·열연 선물 주간 종가는 수집 준비 중",
    thesis:"중국 조강 감산과 수출 증가가 맞물리며 아시아 열연 가격 바닥권 횡보",
    points:["중국 조강 일평균 생산 감소 지속, 연간 감산 목표 달성 위해 4분기 추가 감산 예상","중국 열연 수출 오퍼 저가 지속, 동남아·중동 시장 가격 경쟁 심화","국내 건설 착공 부진으로 봉형강 수요 약세, 판재류는 조선향 견조"],
    reasons:["유통 재고 연속 감소로 추가 하락 여지 축소","감산 정책이 공급 측 하방 지지 역할"],
    risks:["중국 수출 급증 시 각국 반덤핑 확대와 역내 가격 하락","부동산 지표 추가 악화 시 건설용 강재 수요 위축"],
    outlook:[["1개월","flat","3,250~3,400"],["3개월","flat","3,200~3,450"],["1년","up","3,300~3,600"]], unit:"중국 열연 위안/톤"},
- { id:"ore", code:"ORE", name:"철광석", dir:"down", ind:["ore62","dce_ore","port_ore","au_ship","br_ship"],
+ { id:"ore", code:"ORE", name:"철광석", dir:"down", wk:[], mo:["iron_ore_m"], wkNote:"DCE 철광석 선물 주간 종가는 수집 준비 중",
    thesis:"호주·브라질 출하 증가와 중국 감산이 겹치며 공급 과잉 우려 확대",
    points:["철광석 62% Fe CFR 중국 3주 연속 하락, 100달러선 하회","시만두(Simandou) 초기 출하 개시로 중장기 공급 증가 가시화","중국 항만 재고 1억 4천만 톤대 재진입, 제철소 원료 재고 보충 수요 둔화"],
    reasons:["중국 조강 감산으로 원료 수요 감소","신규 광산 출하와 메이저사 분기말 물량 확대"],
    risks:["중국 부양책 발표 시 투기 수요 유입으로 단기 급반등","호주 사이클론·브라질 우기 등 출하 차질"],
    outlook:[["1개월","down","92~100"],["3개월","down","88~98"],["1년","down","80~95"]], unit:"62% Fe CFR 달러/톤"},
- { id:"coal", code:"COAL", name:"석탄", dir:"down", ind:["plv","coke","nwc","mn_imp","port_cc"],
+ { id:"coal", code:"COAL", name:"석탄", dir:"down", wk:[], mo:["coal_au_m"], wkNote:"DCE 원료탄·코크스 선물 주간 종가는 수집 준비 중",
    thesis:"원료탄은 중국 수입 축소로 약세, 발전용은 동절기 재고 비축으로 보합",
    points:["호주 강점결탄(PLV) FOB 3주 연속 하락, 중국 몽골산 수입 확대 영향","인도 제철소 원료탄 구매 꾸준하나 가격 지지에는 역부족","뉴캐슬 발전용탄은 동북아 동절기 재고 비축 수요로 보합 유지"],
    reasons:["중국 육로 수입 확대로 해상 원료탄 수요 감소","철강 감산으로 코크스 수요 동반 약세"],
    risks:["호주 퀸즐랜드 우기 조기 진입 시 공급 차질","중국 안전 점검 강화로 자국 탄광 생산 축소"],
-   outlook:[["1개월","down","175~190"],["3개월","flat","170~195"],["1년","flat","165~200"]], unit:"PLV FOB 달러/톤"}
+   outlook:[["1개월","down","175~190"],["3개월","flat","170~195"],["1년","flat","165~200"]], unit:"PLV FOB 달러/톤"},
+ { id:"freight", code:"FREIGHT", name:"해상운임", dir:null, wk:[], mo:[], pending:true,
+   wkNote:"BDI · BCI C5(서호주→중국) · BCI C3(브라질→중국) 수집 예정 · 데이터 출처 확정 후 게재",
+   thesis:"철광석·석탄 해상 운송비 흐름", points:[], reasons:[], risks:[] }
 ];
 
-function reportRow(id){
-  const i=byId[id], d=dirOf(i.c1), last8=i.s.slice(-8).map(p=>p.v);
-  return `<tr><td>${i.name}${i.unit?`<span class="unit">${i.unit}</span>`:""}</td>
-    <td class="num">${fmt(i.cur,i.dec)}</td><td class="num">${fmt(i.prev,i.dec)}</td>
-    <td class="num c-${d}">${arrow(d)} ${fmt(Math.abs(i.cur-i.prev),i.dec)}</td>
-    <td class="num c-${d}">${sgn(i.c1)}</td><td>${spark(last8,d)}</td><td class="note">${i.note}</td></tr>`;
+const isoD = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+let REPORT_FRI = null;          // 리포트 기준 금요일 (주간 데이터의 최신 금요일)
+function reportBaseFriday(){
+  let m=null; DB.filter(i=>i.freq==="W").forEach(i=>{ const d=i.s[i.s.length-1].d; if(!m||d>m) m=d; });
+  return m;
 }
-$("#jump").innerHTML = REPORT.map(s=>`<button class="chip" data-j="${s.id}">${s.name}</button>`).join("");
-$("#glanceRows").innerHTML = REPORT.map(s=>`<div class="grow"><button data-j="${s.id}">${s.name}</button><p>${s.thesis}</p>${pill(s.dir)}</div>`).join("");
-$("#sections").innerHTML = REPORT.map(s=>`
+function atFri(i,fri){ const k=isoD(fri); const j=i.s.findIndex(p=>isoD(p.d)===k); return j; }
+function streak(i,j){
+  const d0=dirOf(pct(i.s[j].v,i.s[j-1].v)); let k=0;
+  for(let t=j;t>0;t--){ if(dirOf(pct(i.s[t].v,i.s[t-1].v))===d0) k++; else break; }
+  const per=i.freq==="W"?"주":"개월";
+  return d0==="flat"?`보합 ${k}${per}째`:`${d0==="up"?"상승":"하락"} ${k}${per}째`;
+}
+function rowCells(i,j){
+  const cur=i.s[j].v, prev=i.s[j-1].v, c=pct(cur,prev), d=dirOf(c), last8=i.s.slice(Math.max(0,j-7),j+1).map(p=>p.v);
+  return `<td class="num">${fmt(cur,i.dec)}</td><td class="num">${fmt(prev,i.dec)}</td>
+    <td class="num c-${d}">${arrow(d)} ${fmt(Math.abs(cur-prev),i.dec)}</td>
+    <td class="num c-${d}">${sgn(c)}</td><td>${spark(last8,d)}</td>`;
+}
+function weeklyRow(id,fri){
+  const i=dbById[id]; if(!i) return "";
+  const name=`<td>${i.name}${i.unit?`<span class="unit">${i.unit}</span>`:""}</td>`;
+  const j=atFri(i,fri);
+  if(j<1) return `<tr>${name}<td class="num">—</td><td class="num">${(()=>{const k=atFri(i,new Date(fri.getFullYear(),fri.getMonth(),fri.getDate()-7));return k>=0?fmt(i.s[k].v,i.dec):"—"})()}</td><td colspan="3" class="note">기준일 값 미발표 · 다음 수집 때 반영</td><td class="note">${i.src}</td></tr>`;
+  return `<tr>${name}${rowCells(i,j)}<td class="note">${streak(i,j)}</td></tr>`;
+}
+function monthlyRow(id){
+  const i=dbById[id]; if(!i) return "";
+  const j=i.s.length-1;
+  return `<tr><td>${i.name}${i.unit?`<span class="unit">${i.unit}</span>`:""}</td>${rowCells(i,j)}
+    <td class="note">${fdt(i,i.s[j].d)} 기준 · ${streak(i,j)}</td></tr>`;
+}
+function tablesHTML(s){
+  if(!DB_REAL) return `<p class="note" style="color:var(--muted)">지표 데이터를 불러오는 중</p>`;
+  const fri=REPORT_FRI, prevFri=new Date(fri.getFullYear(),fri.getMonth(),fri.getDate()-7);
+  let h="";
+  if(s.wk.length) h+=`<div class="tbl-box"><table class="min640">
+      <thead><tr><th>주간 지표 (금요일 기준)</th><th>${isoD(fri)}</th><th>${isoD(prevFri)}</th><th>증감</th><th>증감률</th><th>최근 8주 흐름</th><th>비고</th></tr></thead>
+      <tbody>${s.wk.map(id=>weeklyRow(id,fri)).join("")}</tbody></table></div>`;
+  else if(s.wkNote) h+=`<div class="box" style="font-size:13.5px;color:var(--muted)">주간 지표 · ${s.wkNote}</div>`;
+  if(s.mo.length) h+=`<div class="tbl-box"><table class="min640">
+      <thead><tr><th>월간 지표 (최근 발표월)</th><th>최근월</th><th>직전월</th><th>증감</th><th>증감률</th><th>최근 8개월 흐름</th><th>비고</th></tr></thead>
+      <tbody>${s.mo.map(monthlyRow).join("")}</tbody></table></div>`;
+  return h;
+}
+function renderReport(){
+  if(DB_REAL){ REPORT_FRI=reportBaseFriday();
+    const pub=new Date(REPORT_FRI.getFullYear(),REPORT_FRI.getMonth(),REPORT_FRI.getDate()+3), wd="일월화수목금토";
+    $("#issueBox").innerHTML=`<b>${pub.getFullYear()}. ${String(pub.getMonth()+1).padStart(2,"0")}. ${String(pub.getDate()).padStart(2,"0")} (${wd[pub.getDay()]})</b>기준일 ${isoD(REPORT_FRI)} (금)`; }
+  $("#jump").innerHTML = REPORT.map(s=>`<button class="chip" data-j="${s.id}">${s.name}</button>`).join("");
+  $("#glanceRows").innerHTML = REPORT.filter(s=>!s.pending).map(s=>`<div class="grow"><button data-j="${s.id}">${s.name}</button><p>${s.thesis}</p>${pill(s.dir)}</div>`).join("");
+  $("#sections").innerHTML = REPORT.map(s=>`
 <section class="ind" id="sec-${s.id}" aria-labelledby="h-${s.id}">
   <div class="ind-head"><span class="code">${s.code}</span>
-    <div><h2 id="h-${s.id}">${s.name}</h2><p class="thesis">${s.thesis}</p></div>${pill(s.dir)}</div>
+    <div><h2 id="h-${s.id}">${s.name}</h2><p class="thesis">${s.thesis}${s.pending?"":` <span class="pill flat sm">해설 샘플</span>`}</p></div>${s.dir?pill(s.dir):`<span class="pill flat">준비 중</span>`}</div>
   <div class="ind-body">
-    <ul class="points">${s.points.map(p=>`<li>${p}</li>`).join("")}</ul>
-    <div class="tbl-box"><table class="min640">
-      <thead><tr><th>지표</th><th>최근</th><th>직전</th><th>증감</th><th>증감률</th><th>최근 8기간</th><th>비고</th></tr></thead>
-      <tbody>${s.ind.map(reportRow).join("")}</tbody></table></div>
-    <div class="two">
+    ${s.points.length?`<ul class="points">${s.points.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}
+    ${tablesHTML(s)}
+    ${s.reasons.length?`<div class="two">
       <div class="box"><h3>판단 근거</h3><ul>${s.reasons.map(r=>`<li>${r}</li>`).join("")}</ul></div>
       <div class="box risk"><h3>리스크 요인</h3><ul>${s.risks.map(r=>`<li>${r}</li>`).join("")}</ul></div>
-    </div>
+    </div>`:""}
     ${s.outlook?`<div><div class="eyebrow" style="margin-bottom:8px">흐름 전망 · ${s.unit}</div>
       <div class="outlook">${s.outlook.map(([h,d,r])=>`<div class="ol"><div class="h">${h}</div><div class="v">${pill(d)}<span class="r">${r}</span></div></div>`).join("")}</div></div>`:""}
     ${s.impact?`<div><div class="eyebrow" style="margin-bottom:8px">산업별 영향</div>
       <div class="impact">${s.impact.map(([n,d,t])=>`<div class="imp"><b>${n} ${pill(d,1)}</b><p>${t}</p></div>`).join("")}</div></div>`:""}
   </div>
 </section>`).join("");
+}
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-j]"); if(b) document.getElementById("sec-"+b.dataset.j).scrollIntoView(); });
 
 /* ---------- 2. 가격 전망 ---------- */
@@ -732,9 +776,10 @@ function route(){
 }
 document.addEventListener("click",e=>{ if(e.target.id==="backLatest"){ viewIssue=9; route(); }});
 addEventListener("hashchange",route);
+renderReport();
 route();
 fetch("data/db.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status))
-  .then(j=>{ loadRealDB(j); if(location.hash.slice(1)==="db") renderDB(); })
+  .then(j=>{ loadRealDB(j); renderReport(); if(location.hash.slice(1)==="db") renderDB(); })
   .catch(()=>{});
 </script>
 
