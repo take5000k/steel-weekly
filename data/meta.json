@@ -186,7 +186,7 @@
   {
    "id": "coal_au_m",
    "cat": "coal",
-   "name": "호주 석탄 가격(월평균)",
+   "name": "호주 발전용 석탄 가격(월평균)",
    "unit": "달러/톤",
    "freq": "M",
    "src_label": "FRED (IMF 1차상품가격)",

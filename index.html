@@ -220,7 +220,7 @@ footer p{margin:4px 0}
     </div>
     <div class="issue" id="issueBox"><b>2026. 10. 05 (월)</b>기준일 불러오는 중</div>
   </div>
-  <div class="sample">시범 운영 중 — DB센터와 주간 리포트 지표표는 실제 공개 데이터, 리포트 해설·가격 전망·아카이브는 아직 샘플</div>
+  <div class="sample">시범 운영 중 — 지표는 공개 데이터 자동 수집, 해설은 주 1회 작성, 가격 전망은 발행 준비 중</div>
 </header>
 
 <nav class="menu" aria-label="메뉴">
@@ -244,7 +244,7 @@ footer p{margin:4px 0}
     </div>
     <section class="card" id="glance">
       <div class="eyebrow">이번 주 한눈에</div>
-      <h2>중국 감산 기조 속 원료탄·철광석 동반 약세, 철강 가격은 바닥 다지기 국면</h2>
+      <h2 id="glanceTitle"></h2>
       <div id="glanceRows"></div>
     </section>
     <div id="sections" class="view"></div>
@@ -253,20 +253,17 @@ footer p{margin:4px 0}
   <!-- 가격 전망 -->
   <div class="view" id="v-forecast" hidden>
     <div class="page-head">
-      <div><h1>가격 전망</h1><p>품목별 향후 4주 주간 전망과 1개월·3개월·1년 흐름 판단</p></div>
-      <div class="meta">기준일 2026.10.02 · 예측 4주</div>
+      <div><h1>가격 전망</h1><p>품목별 1개월·3개월·1년 흐름 전망과 만기 도래분 사후 검증</p></div>
+      <div class="meta">전망 발행 전</div>
     </div>
-    <div class="seg" id="fcTargets" role="tablist" aria-label="전망 품목"></div>
-    <section class="card" id="fcVerdict"></section>
+    <div class="notice">첫 가격 전망은 주간 시세(대련·상해 거래소 선물) 수집이 갖춰진 뒤 발행 예정. 발행 전까지는 실제 가격 추이만 표시하며 전망 범위와 성적표는 비워 둠.</div>
+    <div class="seg" id="fcTargets" role="tablist" aria-label="품목"></div>
     <section class="card">
       <div class="row-between" style="margin-bottom:10px">
         <div class="eyebrow" id="fcChartTitle"></div>
-        <div class="legend"><span><i></i>실적</span><span><i class="dash"></i>전망</span><span><i class="band"></i>80% 예상 범위</span></div>
+        <div class="meta" id="fcLatest"></div>
       </div>
       <div class="chart" id="fcChart"></div>
-      <div class="tbl-box" style="margin-top:16px"><table class="min640">
-        <thead><tr><th>품목</th><th>현재(10/02)</th><th>10/09</th><th>10/16</th><th>10/23</th><th>10/30</th><th>4주 변화</th><th>방향</th></tr></thead>
-        <tbody id="fcTable"></tbody></table></div>
     </section>
     <section class="card">
       <div class="seg" id="fcTabs" style="margin-bottom:16px">
@@ -280,7 +277,7 @@ footer p{margin:4px 0}
   <div class="view" id="v-db" hidden>
     <div class="page-head">
       <div><h1>DB센터</h1><p>매크로·산업 지표를 한곳에서 조회, 항목을 선택하면 상세 정보 표시</p></div>
-      <div class="meta" id="dbUpdated">샘플 데이터</div>
+      <div class="meta" id="dbUpdated">데이터 불러오는 중</div>
     </div>
     <div class="chips" id="dbCats"></div>
     <div class="db-tools">
@@ -317,7 +314,7 @@ footer p{margin:4px 0}
 
 <footer>
   <div class="wrap">
-    <p><b>출처(예정)</b> 한국은행 ECOS, 美 FRED, 중국 국가통계국, 대련상품거래소(DCE), 상해선물거래소(SHFE), 호주 산업과학자원부 등 공개 정보 · 유료 가격지수는 라이선스 확인 후 사용</p>
+    <p><b>출처</b> 한국은행 ECOS, 美 FRED(연준·재무부·EIA·BLS·IMF 1차상품가격), Source: World Steel Association (worldsteel) · 지표별 출처는 DB센터 상세 화면에 표기 · 유료 가격지수는 이용 조건 확인 전 미게재</p>
     <p>본 리포트는 공개 정보를 바탕으로 한 개인 분석으로, 특정 기관의 견해나 투자 권유가 아님</p>
   </div>
 </footer>
@@ -338,64 +335,7 @@ const md = d => `${d.getMonth()+1}/${String(d.getDate()).padStart(2,"0")}`;
 
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
-/* ---------- 지표 DB (샘플) ----------
-   recent: 최근 8기간 값(마지막이 최신), 그 이전은 시드 기반으로 역산 생성 */
 const CATS = [["macro","매크로"],["steel","철강"],["ore","철광석"],["coal","석탄"]];
-const IND = [
- {id:"krw",cat:"macro",name:"원/달러 환율",unit:"원",dec:1,freq:"W",vol:.009,drift:.0004,src:"한국은행 ECOS",recent:[1352,1348,1341,1338,1344,1352,1361,1372]},
- {id:"dxy",cat:"macro",name:"달러인덱스",unit:"pt",dec:1,freq:"W",vol:.008,drift:-.0003,src:"FRED / ICE",recent:[100.8,100.4,99.9,99.6,100.1,100.6,101.2,101.7]},
- {id:"ust10",cat:"macro",name:"美 10년물 국채 금리",unit:"%",dec:2,freq:"W",vol:.018,drift:0,src:"FRED",recent:[4.12,4.10,4.08,4.15,4.19,4.24,4.28,4.33]},
- {id:"kr_rate",cat:"macro",name:"한국 기준금리",unit:"%",dec:2,freq:"M",vol:0,drift:0,src:"한국은행",recent:[2.75,2.75,2.50,2.50,2.50,2.50,2.50,2.50],flat:2.75},
- {id:"cn_pmi",cat:"macro",name:"중국 제조업 PMI",unit:"",dec:1,freq:"M",vol:.008,drift:0,src:"중국 국가통계국",recent:[50.3,50.1,49.9,50.2,49.8,49.7,49.6,49.5]},
- {id:"wti",cat:"macro",name:"WTI 유가",unit:"달러/배럴",dec:1,freq:"W",vol:.03,drift:-.0008,src:"FRED / EIA",recent:[71.2,70.5,69.8,68.4,67.9,68.6,69.3,68.1]},
-
- {id:"hrc",cat:"steel",name:"중국 열연 선물(SHFE)",unit:"위안/톤",dec:0,freq:"W",vol:.018,drift:-.0012,src:"상해선물거래소",recent:[3380,3352,3320,3305,3290,3310,3322,3318]},
- {id:"rebar",cat:"steel",name:"중국 철근 선물(SHFE)",unit:"위안/톤",dec:0,freq:"W",vol:.018,drift:-.0014,src:"상해선물거래소",recent:[3190,3165,3140,3122,3105,3118,3126,3121]},
- {id:"hrc_fob",cat:"steel",name:"중국 열연 수출 FOB",unit:"달러/톤",dec:0,freq:"W",vol:.012,drift:-.001,src:"검토 중(라이선스 확인)",recent:[478,474,470,466,462,463,465,464]},
- {id:"cs_out",cat:"steel",name:"중국 조강 일평균 생산",unit:"만 톤/일",dec:0,freq:"W",vol:.012,drift:-.0006,src:"중국강철공업협회",recent:[268,265,263,260,258,257,255,254]},
- {id:"st_inv",cat:"steel",name:"중국 철강 유통재고",unit:"만 톤",dec:0,freq:"W",vol:.025,drift:0,src:"공개 집계(검토 중)",recent:[1112,1098,1086,1075,1061,1050,1046,1043]},
-
- {id:"ore62",cat:"ore",name:"철광석 62% Fe CFR 중국",unit:"달러/톤",dec:1,freq:"W",vol:.03,drift:-.0008,src:"SGX 결제가(라이선스 확인)",recent:[104.2,103.5,102.8,103.1,101.6,100.4,99.1,97.8]},
- {id:"dce_ore",cat:"ore",name:"DCE 철광석 선물",unit:"위안/톤",dec:0,freq:"W",vol:.03,drift:-.0008,src:"대련상품거래소",recent:[772,768,760,764,752,744,736,728]},
- {id:"port_ore",cat:"ore",name:"중국 항만 철광석 재고",unit:"만 톤",dec:0,freq:"W",vol:.015,drift:.0006,src:"공개 집계(검토 중)",recent:[13620,13710,13800,13860,13950,14020,14110,14190]},
- {id:"au_ship",cat:"ore",name:"호주 철광석 주간 출하",unit:"만 톤",dec:0,freq:"W",vol:.05,drift:.0004,src:"항만 공시",recent:[1720,1685,1750,1790,1810,1765,1830,1855]},
- {id:"br_ship",cat:"ore",name:"브라질 철광석 주간 출하",unit:"만 톤",dec:0,freq:"W",vol:.06,drift:.0004,src:"항만 공시",recent:[760,742,781,795,810,802,826,840]},
-
- {id:"plv",cat:"coal",name:"호주 강점결탄 PLV FOB",unit:"달러/톤",dec:0,freq:"W",vol:.035,drift:-.0015,src:"검토 중(라이선스 확인)",recent:[198,196,193,195,192,189,186,183]},
- {id:"coke",cat:"coal",name:"중국 코크스 선물(DCE)",unit:"위안/톤",dec:0,freq:"W",vol:.03,drift:-.0012,src:"대련상품거래소",recent:[1720,1708,1694,1700,1688,1672,1660,1651]},
- {id:"nwc",cat:"coal",name:"뉴캐슬 발전용탄 FOB",unit:"달러/톤",dec:0,freq:"W",vol:.03,drift:-.0006,src:"ICE 선물(검토 중)",recent:[106,105,104,105,106,105,106,106]},
- {id:"mn_imp",cat:"coal",name:"중국 몽골산 석탄 수입",unit:"만 톤/월",dec:0,freq:"M",vol:.05,drift:.006,src:"중국 해관총서",recent:[720,735,748,760,772,781,790,802]},
- {id:"port_cc",cat:"coal",name:"중국 항만 원료탄 재고",unit:"만 톤",dec:0,freq:"W",vol:.03,drift:.0005,src:"공개 집계(검토 중)",recent:[465,470,478,481,487,492,499,503]}
-];
-const WEEK_END = new Date(2026,9,2), N_W = 157, N_M = 37;
-IND.forEach((ind,k)=>{
-  const n = ind.freq==="W" ? N_W : N_M, r = rng(1000+k*7919), v = new Array(n);
-  const R = ind.recent, off = n - R.length;
-  R.forEach((x,i)=> v[off+i]=x);
-  for(let i=off-1;i>=0;i--){
-    if(ind.vol===0){ v[i]=ind.flat; continue; }
-    const g = Math.sqrt(-2*Math.log(r()+1e-9))*Math.cos(2*Math.PI*r());
-    const mean = 0.03*Math.sin(i/9 + k);   // 완만한 사이클
-    v[i] = v[i+1] / (1 + ind.drift + ind.vol*(g*0.8) + mean*ind.vol);
-  }
-  const p = Math.pow(10,ind.dec);
-  ind.s = v.map((x,i)=>{
-    let d;
-    if(ind.freq==="W"){ d=new Date(WEEK_END); d.setDate(d.getDate()-7*(n-1-i)); }
-    else { d=new Date(2026,8+1-(n-1-i),0); }
-    return {d, v:Math.round(x*p)/p};
-  });
-  const L=ind.s.length, cur=ind.s[L-1].v;
-  const back = (w,m) => ind.s[Math.max(0,L-1-(ind.freq==="W"?w:m))].v;
-  ind.cur=cur; ind.prev=ind.s[L-2].v;
-  ind.c1=pct(cur,ind.prev); ind.cM=pct(cur,back(4,1)); ind.cY=pct(cur,back(52,12));
-  // 연속 방향
-  const d0=dirOf(ind.c1); let k2=0;
-  for(let i=L-1;i>0;i--){ if(dirOf(pct(ind.s[i].v,ind.s[i-1].v))===d0) k2++; else break; }
-  const per = ind.freq==="W"?"주":"개월";
-  ind.note = (ind.freq==="M"?"월간 · ":"") + (d0==="flat" ? `보합 ${k2}${per}째` : `${d0==="up"?"상승":"하락"} ${k2}${per}째`);
-});
-const byId = Object.fromEntries(IND.map(i=>[i.id,i]));
 
 function spark(arr, dir, w=96, h=28){
   const p=3, mn=Math.min(...arr), mx=Math.max(...arr), rg=(mx-mn)||1;
@@ -449,33 +389,58 @@ function drawChart(el,o){
 let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>CHARTS.forEach((o,el)=>{ if(el.isConnected && el.offsetParent) drawChart(el,o); }),150); });
 
 /* ---------- 1. 주간 리포트 ---------- */
+// 해설 문구는 아래 기준일의 수집 데이터로 작성. 데이터가 갱신되면 지표표는 자동 갱신, 해설은 주간 작성 시 교체.
+const TEXT_BASE = "2026-10-09";
+const REPORT_HEAD = "美 장기금리 5%대 고공 속 원화 강세, 국내 철강 물가 정체·철광석·석탄 가격 조정";
 const REPORT = [
- { id:"macro", code:"MACRO", name:"매크로", dir:"flat", wk:["krw_usd_bok","cny_usd_bok","dxy_calc","fed_upper","ust10","wti"], mo:["kr_base","us_indpro"],
-   thesis:"美 금리 인하 기대 후퇴와 달러 강세 재개, 중국 경기 부양 효과 제한적",
-   points:["美 10년물 국채 금리 9월 중순(9/18, 5.01%) 5%대 진입 후 고공 지속, 10/9 기준 5.22%로 전주(5.28%) 대비 소폭 하락","달러인덱스 반등에 원화 약세 전환, 원자재 수입 원가 부담 확대","중국 제조업 PMI 2개월 연속 50 하회, 인프라 중심 부양책 효과 지연"],
-   reasons:["美 금리 고공행진으로 위험자산·원자재 선호 약화","중국 부양책이 소비보다 인프라에 집중되어 체감 효과 지연"],
-   risks:["美 고용 둔화 시 금리 인하 기대 재부각","중국 대규모 추가 부양 발표 시 원자재 전반 반등"],
-   impact:[["철강","down","내수 부진 장기화로 수요 회복 지연"],["철광석","down","달러 강세로 달러 표시 가격 하방 압력"],["석탄","flat","에너지 가격 안정으로 발전용 수요 보합"]]},
- { id:"steel", code:"STEEL", name:"철강", dir:"flat", wk:[], mo:["kr_ppi_steel","kr_ppi_rebar","kr_ppi_hrc","us_steel_ppi"], wkNote:"SHFE 철근·열연 선물 주간 종가는 수집 준비 중",
-   thesis:"중국 조강 감산과 수출 증가가 맞물리며 아시아 열연 가격 바닥권 횡보",
-   points:["중국 조강 일평균 생산 감소 지속, 연간 감산 목표 달성 위해 4분기 추가 감산 예상","중국 열연 수출 오퍼 저가 지속, 동남아·중동 시장 가격 경쟁 심화","국내 건설 착공 부진으로 봉형강 수요 약세, 판재류는 조선향 견조"],
-   reasons:["유통 재고 연속 감소로 추가 하락 여지 축소","감산 정책이 공급 측 하방 지지 역할"],
-   risks:["중국 수출 급증 시 각국 반덤핑 확대와 역내 가격 하락","부동산 지표 추가 악화 시 건설용 강재 수요 위축"],
-   outlook:[["1개월","flat","3,250~3,400"],["3개월","flat","3,200~3,450"],["1년","up","3,300~3,600"]], unit:"중국 열연 위안/톤"},
- { id:"ore", code:"ORE", name:"철광석", dir:"down", wk:[], mo:["iron_ore_m"], wkNote:"DCE 철광석 선물 주간 종가는 수집 준비 중",
-   thesis:"호주·브라질 출하 증가와 중국 감산이 겹치며 공급 과잉 우려 확대",
-   points:["철광석 62% Fe CFR 중국 3주 연속 하락, 100달러선 하회","시만두(Simandou) 초기 출하 개시로 중장기 공급 증가 가시화","중국 항만 재고 1억 4천만 톤대 재진입, 제철소 원료 재고 보충 수요 둔화"],
-   reasons:["중국 조강 감산으로 원료 수요 감소","신규 광산 출하와 메이저사 분기말 물량 확대"],
-   risks:["중국 부양책 발표 시 투기 수요 유입으로 단기 급반등","호주 사이클론·브라질 우기 등 출하 차질"],
-   outlook:[["1개월","down","92~100"],["3개월","down","88~98"],["1년","down","80~95"]], unit:"62% Fe CFR 달러/톤"},
- { id:"coal", code:"COAL", name:"석탄", dir:"down", wk:[], mo:["coal_au_m"], wkNote:"DCE 원료탄·코크스 선물 주간 종가는 수집 준비 중",
-   thesis:"원료탄은 중국 수입 축소로 약세, 발전용은 동절기 재고 비축으로 보합",
-   points:["호주 강점결탄(PLV) FOB 3주 연속 하락, 중국 몽골산 수입 확대 영향","인도 제철소 원료탄 구매 꾸준하나 가격 지지에는 역부족","뉴캐슬 발전용탄은 동북아 동절기 재고 비축 수요로 보합 유지"],
-   reasons:["중국 육로 수입 확대로 해상 원료탄 수요 감소","철강 감산으로 코크스 수요 동반 약세"],
-   risks:["호주 퀸즐랜드 우기 조기 진입 시 공급 차질","중국 안전 점검 강화로 자국 탄광 생산 축소"],
-   outlook:[["1개월","down","175~190"],["3개월","flat","170~195"],["1년","flat","165~200"]], unit:"PLV FOB 달러/톤"},
+ { id:"macro", code:"MACRO", name:"매크로", dir:"flat",
+   wk:["krw_usd_bok","cny_usd_bok","dxy_calc","fed_upper","ust10","wti"], mo:["kr_base","us_indpro"],
+   thesis:"美 10년물 금리 5%대 고공 지속, 원/달러는 1,330원대로 하락하며 원화 강세",
+   points:["美 10년물 국채 금리 9월 중순(9/18, 5.01%) 5%대 진입 후 10/2 5.28%로 최근 1년 최고, 10/9 5.22%로 소폭 하락",
+           "美 기준금리(상단) 9월 셋째 주 3.75%→4.00%로 상향, 한국 기준금리도 7월 2.75%·8월 3.00%로 연속 상향 후 9월 동결",
+           "원/달러 1,339.2원으로 전주 대비 1.5% 하락(원화 강세), 7/3 최근 1년 고점(1,554.1원) 대비 13.8% 낮은 수준",
+           "달러인덱스(DXY 산식) 102.24로 최근 1년 최고, 달러 강세 속에서도 원화는 상대적 강세",
+           "WTI 96.2달러로 전주 대비 1.7% 하락했으나 1년 전 대비 61% 높은 고유가 지속(4/3 113.2달러 고점)"],
+   reasons:["美 장기금리 5%대와 기준금리 상향으로 글로벌 금융 여건은 긴축 방향",
+            "원/달러는 9/11 이후 최저 수준으로 하락해 원화 기준 수입 원가 부담은 전주 대비 완화"],
+   risks:["美 10년물 금리 추가 상승 시 위험자산·원자재 수요 위축 가능성",
+          "유가 재반등 시 물가·금리 상승 압력 재확대"],
+   impact:[["철강","down","고금리 지속은 건설·설비투자 등 철강 수요에 부담 요인"],
+           ["철광석","down","달러 강세는 달러 표시 원자재 가격에 하방 요인"],
+           ["석탄","flat","고유가는 에너지 가격 지지 요인이나 달러 강세와 상충"]]},
+ { id:"steel", code:"STEEL", name:"철강", dir:"flat",
+   wk:[], mo:["kr_ppi_steel","kr_ppi_rebar","kr_ppi_hrc","us_steel_ppi","ws_total","ws_c_china","ws_c_india","ws_c_south_korea"],
+   wkNote:"SHFE 철근·열연 선물 주간 종가는 수집 준비 중",
+   thesis:"국내 철강 생산자물가 8월 상승세 정체, 美 철강 물가 상승 지속, 세계 조강 생산은 감소",
+   points:["한국 생산자물가(8월): 철강1차제품 143.1로 전월 수준 유지, 철근·봉강 0.1% 하락, 열연강판 0.4% 상승(전년 동월 대비 +17.2%)",
+           "美 철강제품 생산자물가(8월) 378.1로 전월 대비 0.9% 상승, 전년 동월 대비 17.9% 상승",
+           "세계 조강 생산(8월, 70개국) 1억 4,420만 톤으로 전년 동월 대비 1.2% 감소, 중국 7,460만 톤(-3.7%)으로 감소 지속",
+           "인도 1,480만 톤(+4.6%)·미국 730만 톤(+3.0%)·한국 540만 톤(+2.6%) 증가, 베트남 +36.4%로 증가 폭 최대"],
+   reasons:["국내 철강 물가는 2025년 12월 저점(130.5) 대비 9.7% 상승 후 7~8월 고점권에서 정체",
+            "세계 생산 감소는 중국 영향이 크며, 중국 외 69개국 합계는 전년 동월 대비 약 1.6% 증가(보도자료 수치로 계산)"],
+   risks:["중국 생산 감소에도 수출 확대 시 아시아 철강 가격 하방 압력",
+          "고금리 장기화에 따른 건설 수요 둔화"]},
+ { id:"ore", code:"ORE", name:"철광석", dir:"down",
+   wk:[], mo:["iron_ore_m"], wkNote:"DCE 철광석 선물 주간 종가는 수집 준비 중",
+   thesis:"철광석 7월 월평균 101.6달러로 2개월 연속 하락, 5월 고점(111.6달러) 대비 9.0% 하락",
+   points:["IMF 기준 철광석 가격 7월 101.6달러/톤, 전월(103.8달러) 대비 2.1% 하락",
+           "4~5월 107~112달러로 상승 후 6~7월 하락 전환, 1년 전과 비슷한 수준(+0.4%)",
+           "월간 지표는 약 2개월 시차로 발표되어 8월 이후 흐름은 발표 후 반영"],
+   reasons:["최근 1년 가격 범위 101~112달러로 100달러 안팎 박스권 유지",
+            "세계 조강 생산 감소(8월 -1.2%)는 원료 수요 둔화 요인"],
+   risks:["중국 경기 부양 시 철강 생산·원료 수요 반등 가능성",
+          "달러 약세 전환 시 달러 표시 가격 상승 요인"]},
+ { id:"coal", code:"COAL", name:"석탄", dir:"down",
+   wk:[], mo:["coal_au_m"], wkNote:"DCE 원료탄·코크스 선물 주간 종가는 수집 준비 중",
+   thesis:"호주 발전용 석탄 7월 월평균 140.4달러, 6월 고점(150.4달러) 대비 6.6% 하락",
+   points:["IMF 기준 호주 발전용 석탄 7월 140.4달러/톤, 전월 대비 6.6% 하락",
+           "1년 전 대비 20.7% 높은 수준으로, 2025년 10월 저점(111.5달러) 이후 상승 흐름에서 조정",
+           "원료탄(강점결탄)은 공개 가격 지표 확보 후 반영 예정"],
+   reasons:["고유가(WTI 1년 전 대비 +61%)로 에너지 가격 전반 높은 수준 유지"],
+   risks:["유가 하락 시 에너지 가격 전반 조정으로 석탄 가격 하방 압력",
+          "동절기 발전 수요 증가 시 반등 가능성"]},
  { id:"freight", code:"FREIGHT", name:"해상운임", dir:null, wk:[], mo:[], pending:true,
-   wkNote:"BDI · BCI C5(서호주→중국) · BCI C3(브라질→중국) 수집 예정 · 데이터 출처 확정 후 게재",
+   wkNote:"BDI · BCI C5(서호주→중국) · BCI C3(브라질→중국)는 지수 이용 조건(Baltic Exchange) 확인 전까지 수치 미게재",
    thesis:"철광석·석탄 해상 운송비 흐름", points:[], reasons:[], risks:[] }
 ];
 
@@ -530,12 +495,14 @@ function renderReport(){
   if(DB_REAL){ REPORT_FRI=reportBaseFriday();
     const pub=new Date(REPORT_FRI.getFullYear(),REPORT_FRI.getMonth(),REPORT_FRI.getDate()+3), wd="일월화수목금토";
     $("#issueBox").innerHTML=`<b>${pub.getFullYear()}. ${String(pub.getMonth()+1).padStart(2,"0")}. ${String(pub.getDate()).padStart(2,"0")} (${wd[pub.getDay()]})</b>기준일 ${isoD(REPORT_FRI)} (금)`; }
+  $("#glanceTitle").textContent = REPORT_HEAD;
+  const stale = DB_REAL && isoD(REPORT_FRI)!==TEXT_BASE;
   $("#jump").innerHTML = REPORT.map(s=>`<button class="chip" data-j="${s.id}">${s.name}</button>`).join("");
   $("#glanceRows").innerHTML = REPORT.filter(s=>!s.pending).map(s=>`<div class="grow"><button data-j="${s.id}">${s.name}</button><p>${s.thesis}</p>${pill(s.dir)}</div>`).join("");
   $("#sections").innerHTML = REPORT.map(s=>`
 <section class="ind" id="sec-${s.id}" aria-labelledby="h-${s.id}">
   <div class="ind-head"><span class="code">${s.code}</span>
-    <div><h2 id="h-${s.id}">${s.name}</h2><p class="thesis">${s.thesis}${s.pending?"":` <span class="pill flat sm">해설 샘플</span>`}</p></div>${s.dir?pill(s.dir):`<span class="pill flat">준비 중</span>`}</div>
+    <div><h2 id="h-${s.id}">${s.name}</h2><p class="thesis">${s.thesis}${s.pending?"":` <span class="pill ${stale?"up":"flat"} sm">해설 ${TEXT_BASE} 기준${stale?" · 지표표는 최신":""}</span>`}</p></div>${s.dir?pill(s.dir):`<span class="pill flat">준비 중</span>`}</div>
   <div class="ind-body">
     ${s.points.length?`<ul class="points">${s.points.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}
     ${tablesHTML(s)}
@@ -553,76 +520,35 @@ function renderReport(){
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-j]"); if(b) document.getElementById("sec-"+b.dataset.j).scrollIntoView(); });
 
 /* ---------- 2. 가격 전망 ---------- */
-const FC = [
- {id:"ore62", short:"철광석", verdict:"하락", dir:"down", f:[97.0,96.2,95.5,94.8], b:[2.2,3.2,4.0,4.8],
-  head:"항만 재고 증가와 감산 기조로 4주간 완만한 하락 예상, 95달러 전후 지지 여부가 관건",
-  bullets:["최근 8주 중 6주 하락, 100달러선 하회 후 반등 탄력 약화","중국 항만 재고 7주 연속 증가로 제철소 구매 서두를 이유 부족","부양책 발표 시 단기 반등 가능성 있으나 공급 증가가 상단 제한"]},
- {id:"plv", short:"강점결탄", verdict:"약보합", dir:"down", f:[181,179,178,177], b:[5,7,9,10],
-  head:"몽골산 육로 수입 확대로 해상 원료탄 약세 지속, 하락 폭은 점차 축소 예상",
-  bullets:["PLV FOB 3주 연속 하락, 인도 구매가 하단 일부 지지","중국 코크스 가격 동반 약세로 원료탄 구매 여력 제한","퀸즐랜드 우기 진입 시점이 연말 반등 변수"]},
- {id:"hrc", short:"중국 열연", verdict:"보합", dir:"flat", f:[3310,3305,3300,3300], b:[40,60,75,90],
-  head:"감산과 재고 감소가 하단을 받치나 수요 부진으로 상단도 제한, 박스권 횡보 예상",
-  bullets:["유통 재고 7주 연속 감소로 추가 하락 여지 축소","부동산 수요 부진과 수출 저가 경쟁이 반등 제약","4분기 감산 강도에 따라 연말 소폭 반등 가능"]}
-];
-const FC_SCORE = [
- ["09.07","철광석","down","98~104","97.8","방향 적중"],
- ["09.07","강점결탄","down","185~197","183","방향 적중"],
- ["09.07","중국 열연","flat","3,250~3,400","3,318","적중"],
- ["08.31","철광석","flat","100~106","99.1","실패"],
- ["08.31","강점결탄","down","186~198","186","적중"],
- ["08.31","중국 열연","down","3,200~3,330","3,322","실패"],
- ["08.24","철광석","down","98~105","100.4","적중"],
- ["08.24","강점결탄","down","185~198","189","적중"],
- ["08.24","중국 열연","flat","3,220~3,380","3,310","적중"]
-];
+const FC = [["iron_ore_m","철광석"],["coal_au_m","호주 발전용 석탄"],["kr_ppi_hrc","국내 열연강판 물가"]];
 let fcSel = 0, fcTab = "outlook";
 function renderForecast(){
-  const t=FC[fcSel], i=byId[t.id];
-  $("#fcTargets").innerHTML = FC.map((x,k)=>`<button role="tab" aria-selected="${k===fcSel}" class="${k===fcSel?"on":""}" data-fc="${k}">${x.short}</button>`).join("");
-  const chg=pct(t.f[3],i.cur);
-  $("#fcVerdict").innerHTML = `<div class="eyebrow">이번 주 판단 · ${i.name}</div>
-    <div class="fc-top" style="margin:8px 0 12px"><div class="verdict c-${t.dir}">${t.verdict}</div><div style="font-weight:600;text-wrap:balance">${t.head}</div></div>
-    <ul class="points">${t.bullets.map(b=>`<li>${b}</li>`).join("")}</ul>`;
-  $("#fcChartTitle").textContent = `${i.name} · 최근 26주 실적과 4주 전망 (${i.unit})`;
-  const hist=i.s.slice(-26), N=hist.length+4;
-  const labels = hist.map(p=>md(p.d)); for(let k=1;k<=4;k++){ const d=new Date(WEEK_END); d.setDate(d.getDate()+7*k); labels.push(md(d)); }
-  const fcPts=[[hist.length-1,i.cur]].concat(t.f.map((v,k)=>[hist.length+k,v]));
-  const band=[[hist.length-1,i.cur,i.cur]].concat(t.f.map((v,k)=>[hist.length+k,v-t.b[k],v+t.b[k]]));
-  drawChart($("#fcChart"),{labels,height:280,split:hist.length-1,band,aria:`${i.name} 전망 차트`,
-    lines:[{pts:hist.map((p,k)=>[k,p.v]),color:"var(--accent)",area:true},{pts:fcPts,color:"var(--accent)",dash:true}],
-    tip:(k,v)=>`${labels[k]} · ${fmt(v,i.dec)}${k>=hist.length?" (전망)":""}`});
-  $("#fcTable").innerHTML = FC.map(x=>{ const j=byId[x.id], c=pct(x.f[3],j.cur), d=dirOf(c);
-    return `<tr><td>${j.name}<span class="unit">${j.unit}</span></td><td class="num"><b>${fmt(j.cur,j.dec)}</b></td>
-      ${x.f.map(v=>`<td class="num">${fmt(v,j.dec)}</td>`).join("")}<td class="num c-${d}">${sgn(c)}</td><td>${pill(x.dir,1)}</td></tr>`; }).join("");
+  $("#fcTargets").innerHTML = FC.map(([id,n],k)=>`<button role="tab" aria-selected="${k===fcSel}" class="${k===fcSel?"on":""}" data-fc="${k}">${n}</button>`).join("");
+  const i = dbById[FC[fcSel][0]];
+  if(!i){ $("#fcChartTitle").textContent="가격 추이"; $("#fcChart").innerHTML=`<p class="note" style="color:var(--muted)">데이터 불러오는 중</p>`; $("#fcLatest").textContent=""; renderFcTab(); return; }
+  const seg=i.s.slice(-36), L=i.s.length;
+  $("#fcChartTitle").textContent = `${i.name} · 최근 3년 실제 추이 (${i.unit})`;
+  $("#fcLatest").textContent = `최근 ${fmt(i.cur,i.dec)} (${fdt(i,i.s[L-1].d)}) · 출처 ${i.src}`;
+  drawChart($("#fcChart"),{labels:seg.map(p=>ym(p.d)),height:280,aria:`${i.name} 추이`,
+    lines:[{pts:seg.map((p,k)=>[k,p.v]),color:"var(--accent)",area:true}],
+    tip:(k,v)=>`${fdt(i,seg[k].d)} · ${fmt(v,i.dec)}`});
   renderFcTab();
 }
 function renderFcTab(){
   document.querySelectorAll("#fcTabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===fcTab));
-  if(fcTab==="outlook"){
-    const map={ore62:"ore",plv:"coal",hrc:"steel"};
-    $("#fcTabBody").innerHTML = FC.map(x=>{ const r=REPORT.find(s=>s.id===map[x.id]);
-      return `<div style="margin-bottom:16px"><div class="row-between" style="margin-bottom:8px"><b>${x.short}</b><span class="unit">${r.unit}</span></div>
-      <div class="outlook">${r.outlook.map(([h,d,v])=>`<div class="ol"><div class="h">${h}</div><div class="v">${pill(d)}<span class="r">${v}</span></div></div>`).join("")}</div></div>`; }).join("");
-  } else {
-    const hit=FC_SCORE.filter(r=>r[5]!=="실패").length, exact=FC_SCORE.filter(r=>r[5]==="적중").length;
-    $("#fcTabBody").innerHTML = `<div class="score">
-      <div><b>${Math.round(hit/FC_SCORE.length*100)}%</b><span>방향 적중률 (${hit}/${FC_SCORE.length})</span></div>
-      <div><b>${Math.round(exact/FC_SCORE.length*100)}%</b><span>범위 적중률 (${exact}/${FC_SCORE.length})</span></div>
-      <div><b>4주</b><span>검증 기간 · 만기 도래분만 집계</span></div></div>
-      <div class="tbl-box"><table class="min640"><thead><tr><th>전망 발행</th><th>품목</th><th>전망 방향</th><th>4주 후 예상 범위</th><th>실제</th><th>결과</th></tr></thead>
-      <tbody>${FC_SCORE.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${pill(r[2],1)}</td><td class="num">${r[3]}</td><td class="num">${r[4]}</td>
-        <td><span class="pill sm ${r[5]==="실패"?"up":r[5]==="적중"?"down":"flat"}">${r[5]}</span></td></tr>`).join("")}</tbody></table></div>`;
-  }
+  $("#fcTabBody").innerHTML = fcTab==="outlook"
+    ? `<p style="margin:0;color:var(--muted)">발행된 전망 없음 · 첫 전망 발행 시 품목별 1개월·3개월·1년 방향과 범위, 판단 근거를 이곳에 표시</p>`
+    : `<p style="margin:0;color:var(--muted)">검증 대상 전망 없음 · 전망 발행 후 만기가 도래한 건부터 실제 가격과 비교해 적중 여부와 적중률을 기록</p>`;
 }
 $("#fcTargets").addEventListener("click",e=>{ const b=e.target.closest("[data-fc]"); if(b){ fcSel=+b.dataset.fc; renderForecast(); }});
 $("#fcTabs").addEventListener("click",e=>{ const b=e.target.closest("[data-t]"); if(b){ fcTab=b.dataset.t; renderFcTab(); }});
 
 /* ---------- 3. DB센터 ---------- */
 let dbCat="macro", dbQ="", dbSel="krw", dbRange="1Y", dbMode="chart";
-let DB = IND, dbById = byId, DB_REAL = false, DB_UPDATED = "2026.10.05";
+let DB = [], dbById = {}, DB_REAL = false, DB_UPDATED = "";
 const RANGES = {W:{"6M":26,"1Y":52,"3Y":156,"전체":1e9}, M:{"1Y":12,"3Y":36,"전체":1e9}};
 const fdt = (i,d) => i.freq==="M" ? `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}` : ymd(d);
-function decOf(v,unit){ const a=Math.abs(v); return unit==="%"?2 : a<20?2 : a<1000?1 : 1; }
+function decOf(v,unit){ const a=Math.abs(v); return unit==="%"?2 : unit==="백만 톤"?1 : a<20?2 : a<1000?1 : 1; }
 function loadRealDB(j){
   const list = j.indicators.filter(x=>x.series && x.series.length>2).map(x=>{
     const s=x.series.map(([d,v])=>({d:new Date(d+"T00:00:00"),v}));
@@ -639,7 +565,7 @@ function renderDB(){
   $("#dbCats").innerHTML = CATS.map(([k,n])=>`<button class="chip ${k===dbCat&&!dbQ?"on":""}" data-cat="${k}">${n} <span style="opacity:.6">${DB.filter(i=>i.cat===k).length}</span></button>`).join("");
   const q=dbQ.trim();
   const list = q ? DB.filter(i=>i.name.includes(q)) : DB.filter(i=>i.cat===dbCat);
-  $("#dbUpdated").textContent = `${DB_REAL?"실제 공개 데이터":"샘플 데이터"} · 최근 수집 ${DB_UPDATED}`;
+  $("#dbUpdated").textContent = DB_REAL?`실제 공개 데이터 · 최근 수집 ${DB_UPDATED}`:"데이터 불러오는 중";
   $("#dbCatName").textContent = q ? `검색 결과 “${q}”` : CATS.find(c=>c[0]===dbCat)[1];
   $("#dbCount").textContent = `${list.length}개 지표`;
   if(list.length && !list.some(i=>i.id===dbSel)) dbSel=list[0].id;
@@ -648,7 +574,7 @@ function renderDB(){
     return `<tr data-id="${i.id}" class="${i.id===dbSel?"sel":""}" tabindex="0"><td>${i.name}<span class="unit">${i.unit}</span></td>
       <td class="num"><b>${fmt(i.cur,i.dec)}</b></td>${cell(i.c1)}${cell(i.cM)}${cell(i.cY)}
       <td>${spark(a,dirOf(i.cM),90,26)}</td><td class="num" style="color:var(--muted)">${fdt(i,i.s[i.s.length-1].d).slice(2)}</td></tr>`; }).join("")
-    : `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">“${q}”와 일치하는 지표 없음 · 다른 단어로 검색</td></tr>`;
+    : `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">${DB_REAL?`“${q}”와 일치하는 지표 없음 · 다른 단어로 검색`:"데이터 불러오는 중"}</td></tr>`;
   renderDetail();
 }
 function renderDetail(){
@@ -725,19 +651,12 @@ function downloadCSV(){
 $("#dbDetail").addEventListener("click",e=>{ if(e.target.id==="dlBtn"){ downloadCSV(); return; } const r=e.target.closest("[data-r]"), m=e.target.closest("[data-m]");
   if(r){ dbRange=r.dataset.r; renderDetail(); } if(m){ dbMode=m.dataset.m; renderDetail(); }});
 
-/* ---------- 4. 아카이브 (샘플 과거호) ---------- */
+/* ---------- 4. 아카이브 ---------- */
+// 발행된 호만 수록. 새 호를 발행할 때 맨 앞에 추가.
 const ISSUES = [
- ["2026-10-05",9,"중국 감산 기조 속 원료탄·철광석 동반 약세, 철강 가격은 바닥 다지기 국면",["flat","flat","down","down"]],
- ["2026-09-28",8,"달러 강세 재개로 원자재 전반 상단 제한, 철광석 100달러선 공방",["flat","flat","down","flat"]],
- ["2026-09-21",7,"중국 9월 부양책 기대가 단기 반등을 이끌었으나 지속성은 제한적",["up","flat","flat","flat"]],
- ["2026-09-14",6,"호주 분기말 출하 확대와 항만 재고 증가로 철광석 약세 전환",["flat","down","down","flat"]],
- ["2026-09-07",5,"美 금리 인하 기대 정점 통과, 중국 철강 유통재고 감소세 지속",["flat","flat","down","down"]],
- ["2026-08-31",4,"몽골산 석탄 수입 사상 최대 수준, 해상 원료탄 가격 하방 압력",["flat","down","flat","down"]],
- ["2026-08-24",3,"중국 조강 감산 지침 구체화로 원료 수요 둔화 우려 확대",["flat","flat","down","down"]],
- ["2026-08-17",2,"하계 비수기 진입에 철강 수요 약세, 원료 가격은 혼조",["down","down","flat","flat"]],
- ["2026-08-10",1,"창간호 · 매크로와 철강 원료 시장의 하반기 주요 변수 점검",["flat","flat","flat","flat"]]
-].map(([d,no,h,dirs])=>({d:new Date(d+"T00:00:00"),no,h,dirs}));
-let arMonth = 10, arSort="desc", viewIssue = 9;
+ {d:new Date(2026,9,12), no:1, base:"2026-10-09", h:REPORT_HEAD, dirs:REPORT.filter(r=>!r.pending).map(r=>r.dir)}
+];
+let arMonth = 0, arSort="desc";
 const WD="일월화수목금토";
 function renderArchive(){
   const cnt={}; ISSUES.forEach(x=>{ const m=x.d.getMonth()+1; cnt[m]=(cnt[m]||0)+1; });
@@ -753,13 +672,13 @@ function renderArchive(){
       <div class="ar-date"><b class="num">${String(x.d.getMonth()+1).padStart(2,"0")}.${String(x.d.getDate()).padStart(2,"0")}</b><span>No. ${String(x.no).padStart(3,"0")} · ${g.m}월 ${wk(x.d)}주</span></div>
       <div style="min-width:0"><h3>${x.h}</h3>
         <div class="ar-dirs">${["매크로","철강","철광석","석탄"].map((n,k)=>`<span>${n} <span class="c-${x.dirs[k]}">${arrow(x.dirs[k])}</span></span>`).join("")}
-        <span>발행 ${ymd(x.d)} (${WD[x.d.getDay()]}) 07:00</span></div></div>
-      <button class="btn ${x.no===9?"primary":""}" data-issue="${x.no}">리포트 보기 →</button></div>`).join("")}</div>`).join("") ||
+        <span>발행 ${ymd(x.d)} (${WD[x.d.getDay()]}) · 기준일 ${x.base}</span></div></div>
+      <button class="btn ${x.no===ISSUES[0].no?"primary":""}" data-issue="${x.no}">리포트 보기 →</button></div>`).join("")}</div>`).join("") ||
     `<p style="color:var(--muted)">선택한 달에 발행된 리포트 없음</p>`;
 }
 $("#arSide").addEventListener("click",e=>{ const b=e.target.closest("[data-m]"); if(b&&!b.disabled){ arMonth=+b.dataset.m; renderArchive(); }});
 $("#arSort").addEventListener("click",e=>{ const b=e.target.closest("[data-s]"); if(!b) return; arSort=b.dataset.s; document.querySelectorAll("#arSort button").forEach(x=>x.classList.toggle("on",x===b)); renderArchive(); });
-$("#arList").addEventListener("click",e=>{ const b=e.target.closest("[data-issue]"); if(!b) return; viewIssue=+b.dataset.issue; location.hash="report"; route(); });
+$("#arList").addEventListener("click",e=>{ const b=e.target.closest("[data-issue]"); if(!b) return; location.hash="report"; });
 
 /* ---------- 라우팅 ---------- */
 const VIEWS=["report","forecast","db","archive"];
@@ -767,23 +686,17 @@ function route(){
   const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "report";
   VIEWS.forEach(k=>document.getElementById("v-"+k).hidden = k!==v);
   document.querySelectorAll(".menu a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
-  if(v==="report"){
-    const x=ISSUES.find(i=>i.no===viewIssue), note=$("#issueNote");
-    if(viewIssue!==9){ note.hidden=false; note.innerHTML=`No. ${String(x.no).padStart(3,"0")} (${ymd(x.d)}) 선택 · 프로토타입에서는 과거호 본문 대신 최신호 화면 표시 <button class="btn" style="margin-left:8px;padding:3px 10px" id="backLatest">최신호로</button>`; }
-    else note.hidden=true;
-  }
   if(v==="forecast") renderForecast();
   if(v==="db") renderDB();
   if(v==="archive") renderArchive();
   scrollTo(0,0);
 }
-document.addEventListener("click",e=>{ if(e.target.id==="backLatest"){ viewIssue=9; route(); }});
 addEventListener("hashchange",route);
 renderReport();
 route();
 fetch("data/db.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status))
-  .then(j=>{ loadRealDB(j); renderReport(); if(location.hash.slice(1)==="db") renderDB(); })
-  .catch(()=>{});
+  .then(j=>{ loadRealDB(j); renderReport(); const v=location.hash.slice(1); if(v==="db") renderDB(); if(v==="forecast") renderForecast(); })
+  .catch(()=>{ $("#dbUpdated").textContent="데이터를 불러오지 못함 · 새로고침 후 다시 시도"; });
 </script>
 
 </body>
