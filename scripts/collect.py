@@ -99,10 +99,12 @@ def ecos_calc(ind):
 
 
 def to_weekly(rows):
-    """주(금요일 마감) 기준 마지막 관측값."""
+    """주(금요일 마감) 기준 마지막 관측값. 아직 금요일이 지나지 않은(마감 전) 주는 제외."""
     wk = {}
     for d, v in sorted(rows):
         fri = d + dt.timedelta(days=(4 - d.weekday()) % 7)
+        if fri > TODAY:
+            continue
         wk[fri] = v
     return sorted(wk.items())
 
@@ -142,7 +144,7 @@ def main():
     old_ind = {m["id"]: m for m in old.get("indicators", [])}
     out, log = [], []
     for ind in CFG["indicators"]:
-        m = {k: ind[k] for k in ("id", "cat", "name", "unit", "freq", "src_label")}
+        m = {k: ind.get(k) for k in ("id", "cat", "name", "unit", "freq", "src_label", "desc")}
         if ind.get("desc"):
             m["desc"] = ind["desc"]
         try:

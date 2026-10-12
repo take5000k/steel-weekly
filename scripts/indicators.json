@@ -10,7 +10,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DEXKOUS",
-      "src_label": "FRED (美 연준)"
+      "src_label": "FRED (美 연준)",
+      "desc": "美 연준 H.10 정오 환율, 원/달러. 원자료 공표가 약 1주 늦음"
     },
     {
       "id": "cny_usd",
@@ -20,7 +21,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DEXCHUS",
-      "src_label": "FRED (美 연준)"
+      "src_label": "FRED (美 연준)",
+      "desc": "美 연준 H.10 정오 환율, 위안/달러. 원자료 공표가 약 1주 늦음"
     },
     {
       "id": "usd_broad",
@@ -30,7 +32,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DTWEXBGS",
-      "src_label": "FRED (美 연준)"
+      "src_label": "FRED (美 연준)",
+      "desc": "美 연준 무역가중 달러지수(Broad, 2006년 1월=100). 원자료 공표가 약 1주 늦음"
     },
     {
       "id": "fed_upper",
@@ -40,7 +43,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DFEDTARU",
-      "src_label": "FRED (美 연준)"
+      "src_label": "FRED (美 연준)",
+      "desc": "美 연방기금금리 목표 범위의 상단, %"
     },
     {
       "id": "ust10",
@@ -50,7 +54,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DGS10",
-      "src_label": "FRED (美 재무부)"
+      "src_label": "FRED (美 재무부)",
+      "desc": "美 재무부 10년 만기 국채 수익률(시장 금리 기준), %"
     },
     {
       "id": "wti",
@@ -60,7 +65,8 @@
       "freq": "W",
       "source": "fred",
       "code": "DCOILWTICO",
-      "src_label": "FRED (美 EIA)"
+      "src_label": "FRED (美 EIA)",
+      "desc": "美 EIA 집계 WTI 원유 현물가격(쿠싱), 달러/배럴"
     },
     {
       "id": "us_indpro",
@@ -70,7 +76,8 @@
       "freq": "M",
       "source": "fred",
       "code": "INDPRO",
-      "src_label": "FRED (美 연준)"
+      "src_label": "FRED (美 연준)",
+      "desc": "美 연준 산업생산지수(2017년=100), 계절조정"
     },
     {
       "id": "krw_usd_bok",
@@ -82,7 +89,8 @@
       "stat": "731Y001",
       "cycle": "D",
       "item": "0000001",
-      "src_label": "한국은행 ECOS"
+      "src_label": "한국은행 ECOS",
+      "desc": "서울외환시장 직전 영업일 원/달러 거래의 거래량 가중평균으로 산출한 매매기준율, 원/달러"
     },
     {
       "id": "cny_usd_bok",
@@ -98,7 +106,8 @@
         "cny": "0000053"
       },
       "formula": "usd/cny",
-      "src_label": "한국은행 ECOS 매매기준율로 계산(원/달러 ÷ 원/위안)"
+      "src_label": "한국은행 ECOS 매매기준율로 계산(원/달러 ÷ 원/위안)",
+      "desc": "한국은행 매매기준율 원/달러를 원/위안으로 나누어 계산한 교차 환율, 위안/달러"
     },
     {
       "id": "dxy_calc",
@@ -119,7 +128,8 @@
         "sek": "0000016"
       },
       "formula": "50.14348112*(eur/usd)**-0.576*(usd/(jpy100/100))**0.136*(gbp/usd)**-0.119*(usd/cad)**0.091*(usd/sek)**0.042*(usd/chf)**0.036",
-      "src_label": "한국은행 ECOS 매매기준율로 ICE DXY 공개 산식 계산"
+      "src_label": "한국은행 ECOS 매매기준율로 ICE DXY 공개 산식 계산",
+      "desc": "ICE 달러인덱스(DXY) 공개 산식(유로 57.6%·엔 13.6%·파운드 11.9%·캐나다달러 9.1%·크로나 4.2%·스위스프랑 3.6%)에 한국은행 매매기준율 교차환율을 넣어 계산한 값. ICE 공식 지수와 소폭 차이 있음"
     },
     {
       "id": "kr_base",
@@ -131,73 +141,80 @@
       "stat": "722Y001",
       "cycle": "M",
       "item": "0101000",
-      "src_label": "한국은행 ECOS"
+      "src_label": "한국은행 ECOS",
+      "desc": "한국은행 기준금리, %. 월말 기준"
     },
     {
       "id": "us_steel_ppi",
       "cat": "steel",
-      "name": "美 철강제품 생산자물가",
+      "name": "美 생산자물가지수(철강제품)",
       "unit": "지수",
       "freq": "M",
       "source": "fred",
       "code": "WPU101",
-      "src_label": "FRED (美 BLS)"
+      "src_label": "FRED (美 BLS)",
+      "desc": "美 노동통계국(BLS) 생산자물가지수 중 '철강 제조품(Iron and steel)' 지수(1982년=100). 가격 수준이 아닌 가격 변동률 비교용 지수"
     },
     {
       "id": "iron_ore_m",
       "cat": "ore",
-      "name": "철광석 가격(월평균)",
+      "name": "철광석 가격(월평균, IMF)",
       "unit": "달러/톤",
       "freq": "M",
       "source": "fred",
       "code": "PIORECRUSDM",
-      "src_label": "FRED (IMF 1차상품가격)"
+      "src_label": "FRED (IMF 1차상품가격)",
+      "desc": "IMF 1차상품가격: 중국 수입 철광석 분광 62% Fe 현물(CFR 톈진항) 월평균, 달러/톤. 발표 시차 약 2개월"
     },
     {
       "id": "coal_au_m",
       "cat": "coal",
-      "name": "호주 발전용 석탄 가격(월평균)",
+      "name": "호주 발전용 석탄 가격(월평균, IMF)",
       "unit": "달러/톤",
       "freq": "M",
       "source": "fred",
       "code": "PCOALAUUSDM",
-      "src_label": "FRED (IMF 1차상품가격)"
+      "src_label": "FRED (IMF 1차상품가격)",
+      "desc": "IMF 1차상품가격: 호주 발전용(일반탄) FOB 뉴캐슬/포트켐블라 월평균, 달러/톤. 제철용 강점결탄 가격이 아닌 참고 지표. 발표 시차 약 2개월"
     },
     {
       "id": "kr_ppi_steel",
       "cat": "steel",
-      "name": "한국 생산자물가(철강1차제품)",
+      "name": "한국 생산자물가지수(철강1차제품)",
       "unit": "지수(2020=100)",
       "freq": "M",
       "source": "ecos",
       "stat": "404Y014",
       "cycle": "M",
       "item": "3071AA",
-      "src_label": "한국은행 ECOS"
+      "src_label": "한국은행 ECOS",
+      "desc": "한국은행 생산자물가지수 중 '철강1차제품' 지수(2020년=100). 국내 생산자 출하가격의 변동을 나타내는 지수로, 톤당 가격 수준이 아닌 변동률 비교용"
     },
     {
       "id": "kr_ppi_rebar",
       "cat": "steel",
-      "name": "한국 생산자물가(철근·봉강)",
+      "name": "한국 생산자물가지수(철근·봉강)",
       "unit": "지수(2020=100)",
       "freq": "M",
       "source": "ecos",
       "stat": "404Y014",
       "cycle": "M",
       "item": "307121AA",
-      "src_label": "한국은행 ECOS"
+      "src_label": "한국은행 ECOS",
+      "desc": "한국은행 생산자물가지수 중 '철근및봉강' 품목지수(2020년=100). 톤당 가격이 아닌 2020년 평균 대비 가격 변동을 나타냄"
     },
     {
       "id": "kr_ppi_hrc",
       "cat": "steel",
-      "name": "한국 생산자물가(열연강판)",
+      "name": "한국 생산자물가지수(열연강판)",
       "unit": "지수(2020=100)",
       "freq": "M",
       "source": "ecos",
       "stat": "404Y014",
       "cycle": "M",
       "item": "307125AA",
-      "src_label": "한국은행 ECOS"
+      "src_label": "한국은행 ECOS",
+      "desc": "한국은행 생산자물가지수 중 '열연강판' 품목지수(2020년=100). 국내 생산자가 출하한 열연강판 가격의 변동을 2020년 평균을 100으로 놓고 나타낸 지수로, 톤당 가격 수준이 아니라 가격 변화율 비교용. 예: 151.3은 2020년 평균 대비 약 51% 높은 수준"
     }
   ],
   "ecos_discover": []

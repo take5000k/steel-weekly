@@ -158,6 +158,10 @@ table.min640{min-width:640px}
 .dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px;margin:0}
 .dl dt{color:var(--muted)} .dl dd{margin:0;text-align:right}
 .fn{margin:-12px 0 0;font-size:12px;color:var(--muted);line-height:1.55}
+.db-list tr.grp td{background:var(--soft);color:var(--muted);font-size:12px;font-weight:600;padding:7px 12px;text-align:left;cursor:default;white-space:normal}
+.db-list tr.grp:hover td{background:var(--soft)}
+td .sub{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.desc{margin:0;font-size:13px;color:var(--muted);line-height:1.6;background:var(--soft);border-radius:4px;padding:10px 12px}
 .dlbox{border:1px solid var(--line);border-radius:4px;padding:12px 14px;display:grid;gap:10px}
 .dlbox h3{margin:0;font-size:13.5px;font-weight:600}
 .dlrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -206,6 +210,30 @@ footer p{margin:4px 0}
   .tiles{grid-template-columns:repeat(2,1fr)}
   .ar-item{grid-template-columns:1fr;gap:8px}
   .card{padding:18px 16px}
+}
+.ar-acts{display:flex;flex-direction:column;gap:6px}
+.ar-acts .btn{text-align:center;text-decoration:none;color:var(--ink)}
+.ar-acts .btn.primary{color:var(--paper)}
+@media print{
+  @page{size:A4;margin:12mm 10mm}
+  :root{--bg:#fff}
+  body{font-size:12px;background:#fff}
+  nav.menu,.sample,#jump,#v-forecast,#v-db,#v-archive{display:none!important}
+  .masthead{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  main{padding-block:10px 0}
+  .wrap{max-width:none;padding-inline:0}
+  .view,.ind-body{grid-template-columns:minmax(0,1fr)}
+  section.ind,.card{break-inside:auto;box-shadow:none}
+  .ind-head,.tbl-box,.box,.two,.impact,.points li,.fn{break-inside:avoid}
+  .ind-head{break-after:avoid}
+  .tbl-box{overflow:visible}
+  table,table.min640{min-width:0;width:100%;table-layout:auto;font-size:11px}
+  th,td{padding:5px 6px;white-space:normal}
+  td:first-child{min-width:150px}
+  svg.spark{width:64px;height:22px}
+  .two,.impact{grid-template-columns:1fr 1fr}
+  footer{display:block;padding-block:8px 0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
@@ -264,6 +292,7 @@ footer p{margin:4px 0}
         <div class="meta" id="fcLatest"></div>
       </div>
       <div class="chart" id="fcChart"></div>
+      <p class="desc" id="fcDesc" style="margin-top:12px" hidden></p>
     </section>
     <section class="card">
       <div class="seg" id="fcTabs" style="margin-bottom:16px">
@@ -289,8 +318,8 @@ footer p{margin:4px 0}
         <div class="row-between" style="padding:0 20px 12px">
           <div><b id="dbCatName" style="font-family:var(--f-display);font-size:18px"></b> <span class="pill flat sm" id="dbCount"></span></div>
         </div>
-        <div style="overflow-x:auto"><table class="db-list" style="min-width:580px">
-          <thead><tr><th>지표명</th><th>현재값</th><th>직전 대비</th><th>1개월</th><th>1년</th><th>최근 6개월</th><th>기준일</th></tr></thead>
+        <div style="overflow-x:auto"><table class="db-list" style="min-width:660px">
+          <thead><tr><th>지표명</th><th>기준</th><th>값</th><th>직전 대비</th><th>1개월</th><th>1년</th><th>최근 흐름</th></tr></thead>
           <tbody id="dbRows"></tbody></table></div>
       </section>
       <aside class="card detail" id="dbDetail" aria-live="polite"></aside>
@@ -409,13 +438,14 @@ const REPORT = [
            ["철광석","down","달러 강세는 달러 표시 원자재 가격에 하방 요인"],
            ["석탄","flat","고유가는 에너지 가격 지지 요인이나 달러 강세와 상충"]]},
  { id:"steel", code:"STEEL", name:"철강", dir:"flat",
-   wk:[], mo:["kr_ppi_steel","kr_ppi_rebar","kr_ppi_hrc","us_steel_ppi","ws_total","ws_c_china","ws_c_india","ws_c_south_korea"],
-   wkNote:"SHFE 철근·열연 선물 주간 종가는 수집 준비 중",
+   wk:[], tn:["nbs_rebar","nbs_hrc"], mo:["kr_ppi_steel","kr_ppi_rebar","kr_ppi_hrc","us_steel_ppi","ws_total","ws_c_china","ws_c_india","ws_c_south_korea"],
+   wkNote:"SHFE 철근·열연 선물 주간 종가는 수집 준비 중 · 중국 내 가격은 국가통계국 순별 유통가로 표시",
    thesis:"국내 철강 생산자물가 8월 상승세 정체, 美 철강 물가 상승 지속, 세계 조강 생산은 감소",
    points:["한국 생산자물가(8월): 철강1차제품 143.1로 전월 수준 유지, 철근·봉강 0.1% 하락, 열연강판 0.4% 상승(전년 동월 대비 +17.2%)",
            "美 철강제품 생산자물가(8월) 378.1로 전월 대비 0.9% 상승, 전년 동월 대비 17.9% 상승",
            "세계 조강 생산(8월, 70개국) 1억 4,420만 톤으로 전년 동월 대비 1.2% 감소, 중국 7,460만 톤(-3.7%)으로 감소 지속",
-           "인도 1,480만 톤(+4.6%)·미국 730만 톤(+3.0%)·한국 540만 톤(+2.6%) 증가, 베트남 +36.4%로 증가 폭 최대"],
+           "인도 1,480만 톤(+4.6%)·미국 730만 톤(+3.0%)·한국 540만 톤(+2.6%) 증가, 베트남 +36.4%로 증가 폭 최대",
+           "중국 유통가(9월 하순): 철근 3,175.9위안/톤(전순 대비 +0.3%), 열연코일 3,297.1위안/톤(-0.4%), 1년 전 대비 각각 -0.3%·-3.4%로 약보합"],
    reasons:["국내 철강 물가는 2025년 12월 저점(130.5) 대비 9.7% 상승 후 7~8월 고점권에서 정체",
             "세계 생산 감소는 중국 영향이 크며, 중국 외 69개국 합계는 전년 동월 대비 약 1.6% 증가(보도자료 수치로 계산)"],
    risks:["중국 생산 감소에도 수출 확대 시 아시아 철강 가격 하방 압력",
@@ -431,14 +461,18 @@ const REPORT = [
    risks:["중국 경기 부양 시 철강 생산·원료 수요 반등 가능성",
           "달러 약세 전환 시 달러 표시 가격 상승 요인"]},
  { id:"coal", code:"COAL", name:"석탄", dir:"down",
-   wk:[], mo:["coal_au_m"], wkNote:"DCE 원료탄·코크스 선물 주간 종가는 수집 준비 중",
-   thesis:"호주 발전용 석탄 7월 월평균 140.4달러, 6월 고점(150.4달러) 대비 6.6% 하락",
-   points:["IMF 기준 호주 발전용 석탄 7월 140.4달러/톤, 전월 대비 6.6% 하락",
-           "1년 전 대비 20.7% 높은 수준으로, 2025년 10월 저점(111.5달러) 이후 상승 흐름에서 조정",
-           "원료탄(강점결탄)은 공개 가격 지표 확보 후 반영 예정"],
-   reasons:["고유가(WTI 1년 전 대비 +61%)로 에너지 가격 전반 높은 수준 유지"],
-   risks:["유가 하락 시 에너지 가격 전반 조정으로 석탄 가격 하방 압력",
-          "동절기 발전 수요 증가 시 반등 가능성"]},
+   wk:[], tn:["nbs_cokingcoal","nbs_coke"], mo:[],
+   wkNote:"호주산 강점결탄 해상 가격(PLV FOB 등)은 유료 지수로 미게재 · 중국 국가통계국 순별 유통가로 표시",
+   ref:{title:"참고 지표 · 발전용탄", tn:["nbs_thermal"], mo:["coal_au_m"]},
+   thesis:"중국 강점결탄 유통가 9월 상순 고점 후 2순 연속 하락, 1년 전 대비로는 67% 높은 수준",
+   points:["중국 강점결탄(主焦煤) 유통가 9월 하순 2,470.0위안/톤, 전순 대비 3.1% 하락하며 9월 상순 고점(2,597.5위안) 이후 2순 연속 하락",
+           "3월 상순 저점(1,415.0위안) 대비 74.6% 상승, 1년 전 대비 67.0% 높은 수준으로 7~9월 급등 후 조정 국면",
+           "야금용 코크스(준1급) 2,096.4위안/톤으로 전순과 같은 수준, 1년 전 대비 55.7% 상승",
+           "참고 · 발전용탄: 중국 산시 우량혼탄 987.7위안(1년 전 대비 +39.7%)으로 상승 지속, IMF 호주 발전용탄(7월 140.4달러)은 6월 고점 대비 6.6% 하락"],
+   reasons:["강점결탄·코크스 동반 급등 후 강점결탄은 조정, 코크스는 고점 수준 유지",
+            "발전용탄도 1년 전 대비 40% 안팎 높아 석탄 가격 전반이 높은 수준"],
+   risks:["중국 조강 생산 감소(8월 -3.7%) 지속 시 원료탄 수요 둔화로 추가 조정 가능성",
+          "탄광 안전 점검·생산 규제 강화 시 공급 축소로 재반등 가능성"]},
  { id:"freight", code:"FREIGHT", name:"해상운임", dir:null, wk:[], mo:[], pending:true,
    wkNote:"BDI · BCI C5(서호주→중국) · BCI C3(브라질→중국)는 지수 이용 조건(Baltic Exchange) 확인 전까지 수치 미게재",
    thesis:"철광석·석탄 해상 운송비 흐름", points:[], reasons:[], risks:[] }
@@ -447,14 +481,16 @@ const REPORT = [
 const isoD = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 let REPORT_FRI = null;          // 리포트 기준 금요일 (주간 데이터의 최신 금요일)
 function reportBaseFriday(){
-  let m=null; DB.filter(i=>i.freq==="W").forEach(i=>{ const d=i.s[i.s.length-1].d; if(!m||d>m) m=d; });
-  return m;
+  // 오늘 기준 이미 지난 가장 최근 금요일(마감 완료 주)과 데이터 최신 금요일 중 이른 날
+  const t=new Date(); t.setHours(0,0,0,0); const lastFri=new Date(t); lastFri.setDate(t.getDate()-((t.getDay()+2)%7));
+  let m=null; DB.filter(i=>i.freq==="W").forEach(i=>{ const d=i.s.filter(p=>p.d<=lastFri).pop()?.d; if(d&&(!m||d>m)) m=d; });
+  return m||lastFri;
 }
 function atFri(i,fri){ const k=isoD(fri); const j=i.s.findIndex(p=>isoD(p.d)===k); return j; }
 function streak(i,j){
   const d0=dirOf(pct(i.s[j].v,i.s[j-1].v)); let k=0;
   for(let t=j;t>0;t--){ if(dirOf(pct(i.s[t].v,i.s[t-1].v))===d0) k++; else break; }
-  const per=i.freq==="W"?"주":"개월";
+  const per=(PER[i.freq]||PER.M).unit;
   return d0==="flat"?`보합 ${k}${per}째`:`${d0==="up"?"상승":"하락"} ${k}${per}째`;
 }
 function rowCells(i,j){
@@ -477,6 +513,13 @@ function monthlyRow(id){
   return `<tr><td>${i.name}${i.unit?`<span class="unit">${i.unit}</span>`:""}</td>${rowCells(i,j)}
     <td class="note">${fdt(i,i.s[j].d)} 기준 · ${streak(i,j)}</td></tr>`;
 }
+function tableT(ids,title){
+  const items=ids.map(id=>dbById[id]).filter(Boolean); if(!items.length) return "";
+  const i0=items[0], L=i0.s.length;
+  return `<div class="tbl-box"><table class="min640">
+      <thead><tr><th>${title}</th><th>${fdt(i0,i0.s[L-1].d)}</th><th>${fdt(i0,i0.s[L-2].d)}</th><th>증감</th><th>증감률</th><th>최근 8순 흐름</th><th>비고</th></tr></thead>
+      <tbody>${items.map(i=>{const j=i.s.length-1; return `<tr><td>${i.name}<span class="unit">${i.unit}</span></td>${rowCells(i,j)}<td class="note">${streak(i,j)}</td></tr>`}).join("")}</tbody></table></div>`;
+}
 function tablesHTML(s){
   if(!DB_REAL) return `<p class="note" style="color:var(--muted)">지표 데이터를 불러오는 중</p>`;
   const fri=REPORT_FRI, prevFri=new Date(fri.getFullYear(),fri.getMonth(),fri.getDate()-7);
@@ -486,9 +529,16 @@ function tablesHTML(s){
       <tbody>${(MISSING=[], s.wk.map(id=>weeklyRow(id,fri)).join(""))}</tbody></table></div>
       ${s.id==="macro"?`<p class="fn">· 원/달러·위안/달러·달러인덱스는 한국은행 매매기준율 기준(서울외환시장 직전 영업일 거래 평균). 위안/달러는 원/달러 ÷ 원/위안, 달러인덱스는 ICE DXY 공개 산식(유로·엔·파운드·캐나다달러·크로나·스위스프랑)으로 계산한 값으로, ICE 공식 지수와 소폭 차이 있음.</p>`:""}${MISSING.length?`<p class="fn">1) ${MISSING.join(", ")}: 원자료 공표가 늦어 기준일(${isoD(fri)}) 값이 비어 있음. 직전 금요일 값까지 표시하며, 다음 수집 때 자동 반영.</p>`:""}`;
   else if(s.wkNote) h+=`<div class="box" style="font-size:13.5px;color:var(--muted)">주간 지표 · ${s.wkNote}</div>`;
+  if(s.tn&&s.tn.length) h+=tableT(s.tn,"순별 지표 (10일 단위)");
   if(s.mo.length) h+=`<div class="tbl-box"><table class="min640">
       <thead><tr><th>월간 지표 (최근 발표월)</th><th>최근월</th><th>직전월</th><th>증감</th><th>증감률</th><th>최근 8개월 흐름</th><th>비고</th></tr></thead>
       <tbody>${s.mo.map(monthlyRow).join("")}</tbody></table></div>`;
+  if(s.ref){ h+=`<div class="eyebrow" style="margin-bottom:-10px">${s.ref.title}</div>`;
+    if(s.ref.tn&&s.ref.tn.length) h+=tableT(s.ref.tn,"순별 지표 (10일 단위)");
+    if(s.ref.mo&&s.ref.mo.length) h+=`<div class="tbl-box"><table class="min640">
+      <thead><tr><th>월간 지표 (최근 발표월)</th><th>최근월</th><th>직전월</th><th>증감</th><th>증감률</th><th>최근 8개월 흐름</th><th>비고</th></tr></thead>
+      <tbody>${s.ref.mo.map(monthlyRow).join("")}</tbody></table></div>`; }
+  h+=`<p class="fn">${[...(s.tn||[]),...(s.ref&&s.ref.tn||[])].length?"· 순별 지표: 중국 국가통계국 「유통영역 중요 생산재 시장가격」(매월 상·중·하순 공표), 중국 내 유통시장 평균 거래가격(위안/톤). ":""}${[...s.mo,...(s.ref&&s.ref.mo||[])].some(id=>/ppi/.test(id))?"· 생산자물가지수는 톤당 가격이 아닌 2020년(美는 1982년)=100 기준 가격 변동 지수. ":""}</p>`;
   return h;
 }
 function renderReport(){
@@ -520,7 +570,7 @@ function renderReport(){
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-j]"); if(b) document.getElementById("sec-"+b.dataset.j).scrollIntoView(); });
 
 /* ---------- 2. 가격 전망 ---------- */
-const FC = [["iron_ore_m","철광석"],["coal_au_m","호주 발전용 석탄"],["kr_ppi_hrc","국내 열연강판 물가"]];
+const FC = [["iron_ore_m","철광석(IMF 월평균)"],["nbs_cokingcoal","중국 강점결탄(主焦煤)"],["kr_ppi_hrc","한국 생산자물가지수(열연강판)"]];
 let fcSel = 0, fcTab = "outlook";
 function renderForecast(){
   $("#fcTargets").innerHTML = FC.map(([id,n],k)=>`<button role="tab" aria-selected="${k===fcSel}" class="${k===fcSel?"on":""}" data-fc="${k}">${n}</button>`).join("");
@@ -529,6 +579,7 @@ function renderForecast(){
   const seg=i.s.slice(-36), L=i.s.length;
   $("#fcChartTitle").textContent = `${i.name} · 최근 3년 실제 추이 (${i.unit})`;
   $("#fcLatest").textContent = `최근 ${fmt(i.cur,i.dec)} (${fdt(i,i.s[L-1].d)}) · 출처 ${i.src}`;
+  const fd=$("#fcDesc"); fd.hidden=!i.desc; fd.textContent=i.desc?`지표 설명 · ${i.desc}`:"";
   drawChart($("#fcChart"),{labels:seg.map(p=>ym(p.d)),height:280,aria:`${i.name} 추이`,
     lines:[{pts:seg.map((p,k)=>[k,p.v]),color:"var(--accent)",area:true}],
     tip:(k,v)=>`${fdt(i,seg[k].d)} · ${fmt(v,i.dec)}`});
@@ -546,20 +597,34 @@ $("#fcTabs").addEventListener("click",e=>{ const b=e.target.closest("[data-t]");
 /* ---------- 3. DB센터 ---------- */
 let dbCat="macro", dbQ="", dbSel="krw", dbRange="1Y", dbMode="chart";
 let DB = [], dbById = {}, DB_REAL = false, DB_UPDATED = "";
-const RANGES = {W:{"6M":26,"1Y":52,"3Y":156,"전체":1e9}, M:{"1Y":12,"3Y":36,"전체":1e9}};
-const fdt = (i,d) => i.freq==="M" ? `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}` : ymd(d);
+// 주기: W 주간(금요일), T 순별(10일), M 월간
+const PER = {W:{p:1,m:4,q:13,y:52,h:26,unit:"주",name:"주간",prev:"전주"}, T:{p:1,m:3,q:9,y:36,h:18,unit:"순",name:"순별(10일)",prev:"전순"}, M:{p:1,m:1,q:3,y:12,h:6,unit:"개월",name:"월간",prev:"전월"}};
+const RANGES = {W:{"6M":26,"1Y":52,"3Y":156,"전체":1e9}, T:{"1Y":36,"3Y":108,"전체":1e9}, M:{"1Y":12,"3Y":36,"전체":1e9}};
+const xun = d => d.getDate()<=10?"상순":d.getDate()<=20?"중순":"하순";
+const fdt = (i,d) => i.freq==="M" ? `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}`
+                   : i.freq==="T" ? `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")} ${xun(d)}` : isoD(d);
+const fdtS = (i,d) => i.freq==="M" ? `${String(d.getFullYear()).slice(2)}.${String(d.getMonth()+1).padStart(2,"0")}`
+                    : i.freq==="T" ? `${d.getMonth()+1}월 ${xun(d)}` : `${d.getMonth()+1}/${String(d.getDate()).padStart(2,"0")}`;
 function decOf(v,unit){ const a=Math.abs(v); return unit==="%"?2 : unit==="백만 톤"?1 : a<20?2 : a<1000?1 : 1; }
 function loadRealDB(j){
   const list = j.indicators.filter(x=>x.series && x.series.length>2).map(x=>{
     const s=x.series.map(([d,v])=>({d:new Date(d+"T00:00:00"),v}));
-    const L=s.length, cur=s[L-1].v, back=(w,m)=>s[Math.max(0,L-1-(x.freq==="W"?w:m))].v;
-    const ind={id:x.id,cat:x.cat,name:x.name,unit:x.unit,freq:x.freq,src:x.src_label,s,cur,prev:s[L-2].v,dec:decOf(cur,x.unit)};
-    ind.c1=pct(cur,ind.prev); ind.cM=pct(cur,back(4,1)); ind.cY=pct(cur,back(52,12));
+    const P=PER[x.freq]||PER.M, L=s.length, cur=s[L-1].v, back=k=>s[Math.max(0,L-1-k)].v;
+    const ind={id:x.id,cat:x.cat,name:x.name,unit:x.unit,freq:x.freq,src:x.src_label,desc:x.desc||"",s,cur,prev:s[L-2].v,dec:decOf(cur,x.unit)};
+    ind.c1=pct(cur,ind.prev); ind.cM=pct(cur,back(P.m)); ind.c3=pct(cur,back(P.q)); ind.cY=pct(cur,back(P.y));
+    if(x.freq==="T"){ const t=new Date(s[L-1].d); t.setFullYear(t.getFullYear()-1); const k=s.findLastIndex(p=>p.d<=t); if(k>=0) ind.cY=pct(cur,s[k].v); }
     return ind; });
   if(!list.length) return;
   DB=list; dbById=Object.fromEntries(list.map(i=>[i.id,i])); DB_REAL=true;
   DB_UPDATED = j.updated_at.slice(0,10).replace(/-/g,".");
   dbSel = (DB.find(i=>i.cat===dbCat)||DB[0]).id;
+}
+function groupLabel(f,items){
+  if(f==="M") return `월간 지표 · 기준월은 지표별 발표 시차로 다름(행별 표기) · 직전 대비 = 전월 대비`;
+  const last=items.reduce((m,i)=>i.s[i.s.length-1].d>m?i.s[i.s.length-1].d:m, items[0].s[items[0].s.length-1].d);
+  const i0=items.find(i=>+i.s[i.s.length-1].d===+last)||items[0], pv=i0.s[i0.s.length-2].d;
+  return f==="W" ? `주간 지표 · 값 = ${isoD(last)}(금) 기준 · 직전 대비 = ${isoD(pv)}(금) 대비`
+                 : `순별 지표(10일 단위) · 값 = ${fdt(i0,last)} 기준 · 직전 대비 = ${fdt(i0,pv)} 대비`;
 }
 function renderDB(){
   $("#dbCats").innerHTML = CATS.map(([k,n])=>`<button class="chip ${k===dbCat&&!dbQ?"on":""}" data-cat="${k}">${n} <span style="opacity:.6">${DB.filter(i=>i.cat===k).length}</span></button>`).join("");
@@ -569,52 +634,60 @@ function renderDB(){
   $("#dbCatName").textContent = q ? `검색 결과 “${q}”` : CATS.find(c=>c[0]===dbCat)[1];
   $("#dbCount").textContent = `${list.length}개 지표`;
   if(list.length && !list.some(i=>i.id===dbSel)) dbSel=list[0].id;
-  const cell=(p)=>{const d=dirOf(p);return `<td class="num c-${d}">${sgn(p)}</td>`};
-  $("#dbRows").innerHTML = list.length ? list.map(i=>{ const n6=i.freq==="W"?26:6, a=i.s.slice(-n6).map(p=>p.v);
+  const cell=(p,sub)=>{const d=dirOf(p);return `<td class="num c-${d}">${sgn(p)}${sub?`<span class="sub">${sub}</span>`:""}</td>`};
+  const row=i=>{ const P=PER[i.freq]||PER.M, L=i.s.length, a=i.s.slice(-P.h).map(p=>p.v);
     return `<tr data-id="${i.id}" class="${i.id===dbSel?"sel":""}" tabindex="0"><td>${i.name}<span class="unit">${i.unit}</span></td>
-      <td class="num"><b>${fmt(i.cur,i.dec)}</b></td>${cell(i.c1)}${cell(i.cM)}${cell(i.cY)}
-      <td>${spark(a,dirOf(i.cM),90,26)}</td><td class="num" style="color:var(--muted)">${fdt(i,i.s[i.s.length-1].d).slice(2)}</td></tr>`; }).join("")
+      <td class="num" style="color:var(--muted)">${fdt(i,i.s[L-1].d)}</td>
+      <td class="num"><b>${fmt(i.cur,i.dec)}</b></td>${cell(i.c1,`vs ${fdtS(i,i.s[L-2].d)}`)}${cell(i.cM)}${cell(i.cY)}
+      <td>${spark(a,dirOf(i.cM),90,26)}</td></tr>`; };
+  const groups=["W","T","M"].map(f=>[f,list.filter(i=>i.freq===f)]).filter(([,g])=>g.length);
+  $("#dbRows").innerHTML = list.length ? groups.map(([f,g])=>`<tr class="grp"><td colspan="7">${groupLabel(f,g)}</td></tr>${g.map(row).join("")}`).join("")
     : `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">${DB_REAL?`“${q}”와 일치하는 지표 없음 · 다른 단어로 검색`:"데이터 불러오는 중"}</td></tr>`;
   renderDetail();
 }
 function renderDetail(){
   const i=dbById[dbSel], el=$("#dbDetail"); if(!i){ el.innerHTML=""; return; }
+  const P=PER[i.freq]||PER.M;
   if(!(dbRange in RANGES[i.freq])) dbRange="1Y";
   const d1=dirOf(i.c1), L=i.s.length, n=RANGES[i.freq][dbRange], seg=i.s.slice(-Math.min(n,L));
-  const c3=pct(i.cur,i.s[Math.max(0,L-1-(i.freq==="W"?13:3))].v);
-  const six=i.s.slice(-(i.freq==="W"?26:6)); let hiP=six[0], loP=six[0]; six.forEach(p=>{ if(p.v>hiP.v) hiP=p; if(p.v<loP.v) loP=p; });
+  const six=i.s.slice(-P.h); let hiP=six[0], loP=six[0]; six.forEach(p=>{ if(p.v>hiP.v) hiP=p; if(p.v<loP.v) loP=p; });
   const word=p=>dirOf(p)==="flat"?"보합":(p>0?"상승":"하락");
   const tile=(t,p)=>`<div class="tile"><span>${t}</span><b class="c-${dirOf(p)}">${sgn(p)}</b></div>`;
+  const cur=fdt(i,i.s[L-1].d), prv=fdt(i,i.s[L-2].d);
+  const dlOpts = i.freq==="W"?[["raw","주간 (금요일 기준 원자료)"],["m_avg","월평균"],["m_end","월말"],["q_avg","분기평균"],["y_avg","연평균"]]
+               : i.freq==="T"?[["raw","순별 (10일 단위 원자료)"],["m_avg","월평균"],["m_end","월말(하순)"],["q_avg","분기평균"],["y_avg","연평균"]]
+               : [["raw","월간 (원자료)"],["q_avg","분기평균"],["y_avg","연평균"]];
   el.innerHTML = `
     <div class="row-between"><div class="d-name">${i.name}</div><span class="pill flat sm">${CATS.find(c=>c[0]===i.cat)[1]}</span></div>
-    <div><div class="d-big"><b class="num">${fmt(i.cur,i.dec)}</b><span class="unit" style="font-size:14px">${i.unit}</span></div>
-      <div class="c-${d1}" style="font-weight:600;margin-top:4px">${arrow(d1)} ${Math.abs(i.c1).toFixed(1)}% <span style="color:var(--muted);font-weight:400">(직전 대비 · 기준일 ${fdt(i,i.s[L-1].d)})</span></div></div>
-    <div class="tiles">${tile("직전 대비",i.c1)}${tile("1개월",i.cM)}${tile("3개월",c3)}${tile("1년",i.cY)}</div>
+    <div><div class="d-big"><b class="num">${fmt(i.cur,i.dec)}</b><span class="unit" style="font-size:14px">${i.unit} · ${cur} 기준</span></div>
+      <div class="c-${d1}" style="font-weight:600;margin-top:4px">${arrow(d1)} ${Math.abs(i.c1).toFixed(1)}% <span style="color:var(--muted);font-weight:400">(${prv} ${fmt(i.prev,i.dec)} 대비)</span></div></div>
+    ${i.desc?`<p class="desc">${i.desc}</p>`:""}
+    <div class="tiles">${tile(`${P.prev} 대비`,i.c1)}${tile("1개월",i.cM)}${tile("3개월",i.c3)}${tile("1년",i.cY)}</div>
     <div class="row-between">
       <div class="seg mini-seg" id="dbMode"><button class="${dbMode==="chart"?"on":""}" data-m="chart">차트</button><button class="${dbMode==="data"?"on":""}" data-m="data">데이터</button></div>
       <div class="seg mini-seg" id="dbRange">${Object.keys(RANGES[i.freq]).map(r=>`<button class="${r===dbRange?"on":""}" data-r="${r}">${r}</button>`).join("")}</div>
     </div>
     <div id="dbChartBox">${dbMode==="chart"?`<div class="chart" id="dbChart"></div>`:
-      `<div class="tbl-box scroll-sm"><table><thead><tr><th>기준일</th><th>값</th><th>직전 대비</th></tr></thead><tbody>${seg.slice().reverse().map((p,k,arr)=>{const pv=arr[k+1]; const c=pv?pct(p.v,pv.v):0; return `<tr><td class="num">${fdt(i,p.d)}</td><td class="num">${fmt(p.v,i.dec)}</td><td class="num c-${dirOf(c)}">${pv?sgn(c):"—"}</td></tr>`}).join("")}</tbody></table></div>`}</div>
-    <div class="box"><h3>최근 변동 요약 <span class="unit">자동 생성</span></h3><ul class="sum">
-      <li>직전 대비 ${Math.abs(i.c1).toFixed(1)}% ${word(i.c1)}</li>
+      `<div class="tbl-box scroll-sm"><table><thead><tr><th>${i.freq==="M"?"기준월":i.freq==="T"?"기준 순":"기준일(금)"}</th><th>값</th><th>${P.prev} 대비</th></tr></thead><tbody>${seg.slice().reverse().map((p,k,arr)=>{const pv=arr[k+1]; const c=pv?pct(p.v,pv.v):0; return `<tr><td class="num">${fdt(i,p.d)}</td><td class="num">${fmt(p.v,i.dec)}</td><td class="num c-${dirOf(c)}">${pv?sgn(c):"—"}</td></tr>`}).join("")}</tbody></table></div>`}</div>
+    <div class="box"><h3>최근 변동 요약 <span class="unit">자동 생성 · ${cur} 기준</span></h3><ul class="sum">
+      <li>${P.prev}(${prv}) 대비 ${Math.abs(i.c1).toFixed(1)}% ${word(i.c1)}</li>
       <li>최근 1개월간 ${Math.abs(i.cM).toFixed(1)}% ${word(i.cM)}</li>
       <li>1년 전 대비 ${Math.abs(i.cY).toFixed(1)}% ${word(i.cY)}한 수준</li>
-      <li>6개월 최고 ${fmt(hiP.v,i.dec)} (${fdt(i,hiP.d).slice(2)}) · 최저 ${fmt(loP.v,i.dec)} (${fdt(i,loP.d).slice(2)})</li></ul></div>
+      <li>최근 6개월 최고 ${fmt(hiP.v,i.dec)} (${fdt(i,hiP.d)}) · 최저 ${fmt(loP.v,i.dec)} (${fdt(i,loP.d)})</li></ul></div>
     <div class="dlbox">
       <h3>데이터 다운로드 <span class="unit">CSV · 엑셀에서 바로 열림</span></h3>
       <div class="dlrow">
         <label for="dlFrom">시작일<input type="date" id="dlFrom" value="${iso(seg[0].d)}" min="${iso(i.s[0].d)}" max="${iso(i.s[L-1].d)}"></label>
         <label for="dlTo">종료일<input type="date" id="dlTo" value="${iso(i.s[L-1].d)}" min="${iso(i.s[0].d)}" max="${iso(i.s[L-1].d)}"></label>
       </div>
-      <label for="dlFreq">주기<select id="dlFreq">${(i.freq==="W"?[["raw","주간 (금요일 기준 원자료)"],["m_avg","월평균"],["m_end","월말"],["q_avg","분기평균"],["y_avg","연평균"]]:[["raw","월간 (원자료)"],["q_avg","분기평균"],["y_avg","연평균"]]).map(([v,t])=>`<option value="${v}">${t}</option>`).join("")}</select></label>
+      <label for="dlFreq">주기<select id="dlFreq">${dlOpts.map(([v,t])=>`<option value="${v}">${t}</option>`).join("")}</select></label>
       <button class="btn primary" id="dlBtn" type="button">CSV 다운로드</button>
-      <p class="hint" id="dlHint">수록 기간 ${fdt(i,i.s[0].d)} ~ ${fdt(i,i.s[L-1].d)} · 총 ${L}건</p>
+      <p class="hint" id="dlHint">수록 기간 ${fdt(i,i.s[0].d)} ~ ${cur} · 총 ${L}건</p>
     </div>
-    <dl class="dl"><dt>단위</dt><dd>${i.unit||"지수"}</dd><dt>데이터 출처</dt><dd>${i.src}</dd><dt>업데이트 주기</dt><dd>${i.freq==="W"?"주간":"월간"}</dd><dt>최근 업데이트</dt><dd class="num">${fdt(i,i.s[L-1].d)}</dd></dl>`;
+    <dl class="dl"><dt>단위</dt><dd>${i.unit||"지수"}</dd><dt>데이터 출처</dt><dd>${i.src}</dd><dt>업데이트 주기</dt><dd>${P.name}</dd><dt>최근 기준</dt><dd class="num">${cur}</dd></dl>`;
   if(dbMode==="chart"){
     const cd = d=>dirOf(pct(seg[seg.length-1].v,seg[0].v));
-    drawChart($("#dbChart"),{labels:seg.map(p=>(seg.length>30||i.freq==="M")?ym(p.d):md(p.d)),height:220,aria:`${i.name} 추이`,
+    drawChart($("#dbChart"),{labels:seg.map(p=>(seg.length>30||i.freq!=="W")?ym(p.d):md(p.d)),height:220,aria:`${i.name} 추이`,
       lines:[{pts:seg.map((p,k)=>[k,p.v]),color:`var(--${cd()})`,area:true}],
       tip:(k,v)=>`${fdt(i,seg[k].d)} · ${fmt(v,i.dec)}`});
   }
@@ -654,7 +727,7 @@ $("#dbDetail").addEventListener("click",e=>{ if(e.target.id==="dlBtn"){ download
 /* ---------- 4. 아카이브 ---------- */
 // 발행된 호만 수록. 새 호를 발행할 때 맨 앞에 추가.
 const ISSUES = [
- {d:new Date(2026,9,12), no:1, base:"2026-10-09", h:REPORT_HEAD, dirs:REPORT.filter(r=>!r.pending).map(r=>r.dir)}
+ {d:new Date(2026,9,12), no:1, base:"2026-10-09", h:REPORT_HEAD, dirs:REPORT.filter(r=>!r.pending).map(r=>r.dir), pdf:"reports/2026-10-12_No001.pdf"}
 ];
 let arMonth = 0, arSort="desc";
 const WD="일월화수목금토";
@@ -673,7 +746,7 @@ function renderArchive(){
       <div style="min-width:0"><h3>${x.h}</h3>
         <div class="ar-dirs">${["매크로","철강","철광석","석탄"].map((n,k)=>`<span>${n} <span class="c-${x.dirs[k]}">${arrow(x.dirs[k])}</span></span>`).join("")}
         <span>발행 ${ymd(x.d)} (${WD[x.d.getDay()]}) · 기준일 ${x.base}</span></div></div>
-      <button class="btn ${x.no===ISSUES[0].no?"primary":""}" data-issue="${x.no}">리포트 보기 →</button></div>`).join("")}</div>`).join("") ||
+      <div class="ar-acts"><button class="btn ${x.no===ISSUES[0].no?"primary":""}" data-issue="${x.no}">리포트 보기 →</button>${x.pdf?`<a class="btn" href="${x.pdf}" download>PDF 발행본 ↓</a>`:""}</div></div>`).join("")}</div>`).join("") ||
     `<p style="color:var(--muted)">선택한 달에 발행된 리포트 없음</p>`;
 }
 $("#arSide").addEventListener("click",e=>{ const b=e.target.closest("[data-m]"); if(b&&!b.disabled){ arMonth=+b.dataset.m; renderArchive(); }});
