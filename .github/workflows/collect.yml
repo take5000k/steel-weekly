@@ -33,6 +33,9 @@ jobs:
       - name: worldsteel 월간 조강 생산 수집
         continue-on-error: true
         run: python scripts/worldsteel.py
+      - name: 중국 국가통계국 순별 유통가격 수집
+        continue-on-error: true
+        run: python scripts/nbs.py
       - name: 변경된 데이터 저장
         run: |
           git config user.name "steel-weekly-bot"

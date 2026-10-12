@@ -122,15 +122,16 @@ def build_db():
     """사이트용 통합 파일 data/db.json 생성 (메타 + 전체 시계열)."""
     meta = json.loads((OUT / "meta.json").read_text(encoding="utf-8"))
     inds = []
-    extra = OUT / "worldsteel" / "meta_ws.json"
-    allm = meta["indicators"] + (json.loads(extra.read_text(encoding="utf-8"))["indicators"] if extra.exists() else [])
+    allm = list(meta["indicators"])
+    for extra in sorted(OUT.glob("*/meta_*.json")):  # worldsteel, nbs 등 별도 수집기 메타
+        allm += json.loads(extra.read_text(encoding="utf-8"))["indicators"]
     for m in allm:
         f = SERIES / f"{m['id']}.csv"
         if not f.exists():
             continue
         with open(f, encoding="utf-8") as fh:
             rows = [[r["date"], float(r["value"])] for r in csv.DictReader(fh)]
-        inds.append({k: m.get(k) for k in ("id", "cat", "name", "unit", "freq", "src_label", "status")} | {"series": rows})
+        inds.append({k: m.get(k) for k in ("id", "cat", "name", "unit", "freq", "src_label", "status", "desc")} | {"series": rows})
     db = {"updated_at": meta["updated_at"], "indicators": inds}
     (OUT / "db.json").write_text(json.dumps(db, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
@@ -142,6 +143,8 @@ def main():
     out, log = [], []
     for ind in CFG["indicators"]:
         m = {k: ind[k] for k in ("id", "cat", "name", "unit", "freq", "src_label")}
+        if ind.get("desc"):
+            m["desc"] = ind["desc"]
         try:
             if ind["source"] == "fred":
                 rows = fred(ind["code"])
